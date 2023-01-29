@@ -5,6 +5,13 @@ module.exports = {
     extend: {
       colors: {
         background: '#FEFEFE',
+        marketColor: '#F50057',
+        marketBlackText: '#2D2926',
+        labelText: '#949494',
+        inputBackground: '#F5F5F5',
+        inputBorder: '#C8C8C8',
+        checked: '#22C55E',
+        unchecked: '#E5E5EA',
       },
       fontFamily: {
         regular: 'Poppins_400Regular',
