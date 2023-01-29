@@ -30,7 +30,11 @@ export function Login() {
             </View>
           </View>
           <View className="mt-8">
-            <MarketButton onPress={handleSign} title="Entrar" />
+            <MarketButton
+              onPress={handleSign}
+              title="Entrar"
+              variant="primary"
+            />
           </View>
         </View>
       </View>
