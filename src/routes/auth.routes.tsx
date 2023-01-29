@@ -5,7 +5,11 @@ import { Login } from '../screens/Login';
 const AuthStack = createStackNavigator();
 
 export const AuthRoutes: React.FC = () => (
-  <AuthStack.Navigator>
+  <AuthStack.Navigator
+    screenOptions={{
+      headerShown: false,
+    }}
+  >
     <AuthStack.Screen name="Login" component={Login} />
   </AuthStack.Navigator>
 );
