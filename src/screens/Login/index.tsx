@@ -1,9 +1,10 @@
-import { Button, Text, TextInput, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { useAuth } from '../../contexts/auth';
-import Logo from '../../assets/brand/logo.svg';
-import Circles from '../../assets/style/circles.svg';
 import { Input } from '../../components/ui/Input';
 import { MarketButton } from '../../components/ui/MarketButton';
+
+import Logo from '../../assets/brand/logo.svg';
+import Circles from '../../assets/style/circles.svg';
 
 export function Login() {
   const { signIn } = useAuth();
