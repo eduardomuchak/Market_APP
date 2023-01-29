@@ -8,6 +8,8 @@ import {
 } from '@expo-google-fonts/poppins';
 import Loading from './src/components/Loading';
 import Routes from './src/routes';
+import { NavigationContainer } from '@react-navigation/native';
+import { AuthProvider } from './src/contexts/auth';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -22,13 +24,15 @@ export default function App() {
   }
 
   return (
-    <>
+    <NavigationContainer>
       <StatusBar
-        barStyle={'light-content'}
+        barStyle={'dark-content'}
         backgroundColor={'transparent'}
         translucent={true}
       />
-      <Routes />
-    </>
+      <AuthProvider>
+        <Routes />
+      </AuthProvider>
+    </NavigationContainer>
   );
 }

@@ -1,15 +1,23 @@
-import { View } from 'react-native';
-import { AppRoutes } from './app.routes';
-import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
+import { View, ActivityIndicator } from 'react-native';
 
-function Routes() {
-  return (
-    <View className="flex-1 bg-background">
-      <NavigationContainer>
-        <AppRoutes />
-      </NavigationContainer>
-    </View>
-  );
-}
+import { useAuth } from '../contexts/auth';
+
+import { AuthRoutes } from '../routes/auth.routes';
+import { AppRoutes } from '../routes/app.routes';
+
+const Routes: React.FC = () => {
+  const { signed, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator color="#F50057" size={80} />
+      </View>
+    );
+  }
+
+  return signed ? <AppRoutes /> : <AuthRoutes />;
+};
 
 export default Routes;
