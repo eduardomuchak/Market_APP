@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, ScrollView } from 'react-native';
 import { useAuth } from '../../contexts/auth';
 import { MarketButton } from '../../components/ui/MarketButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
-// import HomeSVG from '../../assets/illustrations/undraw_fall.svg';
+import HomeSVG from '../../assets/illustrations/undraw_fall.svg';
 const homeImage = require('../../assets/illustrations/undraw_fall.png');
 
 export function Home() {
@@ -19,7 +19,7 @@ export function Home() {
 
   return (
     <SafeAreaView className="flex flex-1">
-      <View className="flex flex-col px-6 bg-white rounded-xl pb-6">
+      <ScrollView className="flex flex-col px-6 bg-white rounded-xl pb-6">
         <View className="flex items-end">
           <MarketButton title="Sair" onPress={handleSignOut} variant="ghost" />
         </View>
@@ -37,7 +37,7 @@ export function Home() {
           </View>
         </View>
 
-        {/* <HomeSVG width={'100%'} height={'48%'} /> */}
+        {/* <HomeSVG width={'100%'} height={'33%'} /> */}
         <View className="flex items-center justify-center">
           <Image source={homeImage} />
         </View>
@@ -63,7 +63,7 @@ export function Home() {
             onPress={() => navigate('register')}
           />
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
