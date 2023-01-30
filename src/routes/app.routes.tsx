@@ -13,10 +13,10 @@ export function AppRoutes() {
         headerShown: false,
       }}
     >
-      <BottomTab.Screen name="Home" component={Home} />
-      <BottomTab.Screen name="Categories" component={Categories} />
-      <BottomTab.Screen name="List" component={List} />
-      <BottomTab.Screen name="Register" component={Register} />
+      <BottomTab.Screen name="home" component={Home} />
+      <BottomTab.Screen name="categories" component={Categories} />
+      <BottomTab.Screen name="list" component={List} />
+      <BottomTab.Screen name="register" component={Register} />
     </BottomTab.Navigator>
   );
 }

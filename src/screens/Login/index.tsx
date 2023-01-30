@@ -20,7 +20,9 @@ export function Login() {
         <View className="mt-16 mb-7">
           <Logo />
         </View>
-        <Text className="font-bold text-base">Entre com seu email e senha</Text>
+        <Text className="font-poppinsBold text-base">
+          Entre com seu email e senha
+        </Text>
         <View className="mt-16 w-full">
           <View className="flex flex-col gap-3">
             <View className="items-stretch">

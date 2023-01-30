@@ -17,7 +17,7 @@ export function MarketButton({ title, variant, ...rest }: Props) {
       {...rest}
     >
       <Text
-        className={clsx('font-bold text-base leading-5 text-center', {
+        className={clsx('font-poppinsBold text-base leading-5 text-center', {
           ['text-white ']: variant === 'primary',
           ['text-marketColor']: variant === 'outline' || variant === 'ghost',
         })}
