@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { useAuth } from '../../contexts/auth';
 import { MarketButton } from '../../components/ui/MarketButton';
 import { SafeAreaView } from 'react-native-safe-area-context';

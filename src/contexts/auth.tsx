@@ -35,7 +35,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setIsLoading(false);
     }
     loadStorageData();
-  });
+  }, []);
 
   async function signIn() {
     const response = await auth.signIn();
