@@ -5,7 +5,7 @@ import { MarketButton } from '../../components/ui/MarketButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 
-import HomeSVG from '../../assets/illustrations/undraw_fall.svg';
+// import HomeSVG from '../../assets/illustrations/undraw_fall.svg';
 const homeImage = require('../../assets/illustrations/undraw_fall.png');
 
 export function Home() {
