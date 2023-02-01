@@ -12,6 +12,7 @@ module.exports = {
         inputBorder: '#C8C8C8',
         checked: '#22C55E',
         unchecked: '#E5E5EA',
+        category1: '#FFC1D7',
       },
       fontFamily: {
         poppinsLight: 'Poppins_300Light',
