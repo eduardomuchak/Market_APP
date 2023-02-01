@@ -7,7 +7,7 @@ interface Props extends TextInputProps {
 export function Input({ label, ...rest }: Props) {
   return (
     <>
-      <Text className="font-bold text-sm leading-4 text-labelText">
+      <Text className="font-poppinsBold text-sm leading-4 text-labelText">
         {label}
       </Text>
       <TextInput
