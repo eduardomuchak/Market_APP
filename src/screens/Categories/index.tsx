@@ -1,6 +1,7 @@
 import { ScrollView, View } from 'react-native';
 import { Header } from '../../components/Header';
 import { CategoryCard } from '../../components/CategoryCard';
+import { RegisterCategoryCard } from '../../components/RegisterCategoryCard';
 
 export function Categories() {
   const categories = [
@@ -31,6 +32,7 @@ export function Categories() {
               categoryName={category.name}
             />
           ))}
+          <RegisterCategoryCard />
         </View>
       </ScrollView>
     </View>

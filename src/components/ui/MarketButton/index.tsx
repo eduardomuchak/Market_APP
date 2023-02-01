@@ -15,6 +15,7 @@ export function MarketButton({ title, variant, ...rest }: Props) {
         ['bg-transparent']: variant === 'ghost',
       })}
       {...rest}
+      activeOpacity={0.7}
     >
       <Text
         className={clsx('font-poppinsBold text-base leading-5 text-center', {

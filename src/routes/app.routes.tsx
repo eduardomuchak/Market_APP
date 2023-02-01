@@ -27,6 +27,7 @@ export function AppRoutes() {
           tabBarIcon: ({ focused }) => {
             return (
               <TouchableOpacity
+                activeOpacity={0.7}
                 className={clsx(
                   `w-full px-2 flex items-center justify-center flex-col gap-1`,
                   {
@@ -56,6 +57,7 @@ export function AppRoutes() {
           tabBarIcon: ({ focused }) => {
             return (
               <TouchableOpacity
+                activeOpacity={0.7}
                 className={clsx(
                   `w-full px-2 flex items-center justify-center flex-col gap-1`,
                   {
@@ -85,6 +87,7 @@ export function AppRoutes() {
           tabBarIcon: ({ focused }) => {
             return (
               <TouchableOpacity
+                activeOpacity={0.7}
                 className={clsx(
                   `w-full px-2 flex items-center justify-center flex-col gap-1`,
                   {
@@ -114,6 +117,7 @@ export function AppRoutes() {
           tabBarIcon: ({ focused }) => {
             return (
               <TouchableOpacity
+                activeOpacity={0.7}
                 className={clsx(
                   `w-full px-2 flex items-center justify-center flex-col gap-1`,
                   {
