@@ -8,6 +8,8 @@ export declare global {
       listOnlyMissing: undefined;
       categories: undefined;
       register: undefined;
+      registerCategory: undefined;
+      registerProduct: undefined;
     }
   }
 }

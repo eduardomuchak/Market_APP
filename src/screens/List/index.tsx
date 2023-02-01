@@ -3,7 +3,6 @@ import { Header } from '../../components/Header';
 import { MarketButton } from '../../components/ui/MarketButton';
 import { useNavigation } from '@react-navigation/native';
 import BottomBar from '../../components/BottomBar';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const selectionImage = require('../../assets/illustrations/undraw_selection.png');
 
