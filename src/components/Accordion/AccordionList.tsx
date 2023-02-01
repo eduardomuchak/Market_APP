@@ -1,18 +1,33 @@
-import { FlatList, View } from 'react-native';
+import { FlatList } from 'react-native';
 import { AccordionItem } from './AccordionItem';
 
 export function AccordionList() {
-  const data = [{ id: 1, title: 'Item 1', content: 'Content 1' }];
+  const data = [
+    {
+      id: 1,
+      title: 'Bebidas',
+      content: [
+        'Content 1',
+        'Content 2',
+        'Content 1',
+        'Content 2',
+        'Content 1',
+        'Content 2',
+      ],
+    },
+    { id: 2, title: 'Comidas', content: ['Content 1', 'Content 2'] },
+    { id: 3, title: 'Lanchoes', content: ['Content 1', 'Content 2'] },
+    { id: 4, title: 'Limpeza', content: ['Content 1', 'Content 2'] },
+  ];
 
   return (
-    <View className="">
-      <FlatList
-        data={data}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={({ item }) => (
-          <AccordionItem title={item.title} content={item.content} />
-        )}
-      />
-    </View>
+    <FlatList
+      className="px-2"
+      data={data}
+      keyExtractor={(item) => String(item.id)}
+      renderItem={({ item }) => (
+        <AccordionItem title={item.title} content={item.content} />
+      )}
+    />
   );
 }
