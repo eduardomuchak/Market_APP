@@ -2,6 +2,7 @@ import { ScrollView, View } from 'react-native';
 import { Header } from '../../components/Header';
 import { CategoryCard } from '../../components/CategoryCard';
 import { RegisterCategoryCard } from '../../components/RegisterCategoryCard';
+import BottomBar from '../../components/BottomBar';
 
 export function Categories() {
   const categories = [
@@ -23,7 +24,7 @@ export function Categories() {
   ];
   return (
     <View className="flex flex-1 flex-col items-center">
-      <Header title="Selecione a categoria" />
+      <Header title="Selecione a categoria" backArrow />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex flex-1 flex-row flex-wrap justify-center">
           {categories.map((category) => (
@@ -35,6 +36,7 @@ export function Categories() {
           <RegisterCategoryCard />
         </View>
       </ScrollView>
+      <BottomBar />
     </View>
   );
 }

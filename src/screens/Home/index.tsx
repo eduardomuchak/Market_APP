@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/auth';
 import { MarketButton } from '../../components/ui/MarketButton';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import BottomBar from '../../components/BottomBar';
 
 // import HomeSVG from '../../assets/illustrations/undraw_fall.svg';
 const homeImage = require('../../assets/illustrations/undraw_fall.png');
@@ -18,8 +19,8 @@ export function Home() {
   const { navigate } = useNavigation();
 
   return (
-    <SafeAreaView className="flex flex-1">
-      <ScrollView className="flex flex-col px-6 bg-white rounded-xl pb-6">
+    <View className="flex flex-1">
+      <ScrollView className="flex flex-col bg-white rounded-xl pt-8 px-6">
         <View className="flex items-end">
           <MarketButton title="Sair" onPress={handleSignOut} variant="ghost" />
         </View>
@@ -64,6 +65,7 @@ export function Home() {
           />
         </View>
       </ScrollView>
-    </SafeAreaView>
+      <BottomBar />
+    </View>
   );
 }
