@@ -1,4 +1,4 @@
-import { StatusBar } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import {
   useFonts,
   Poppins_300Light,
