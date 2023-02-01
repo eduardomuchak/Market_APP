@@ -5,6 +5,7 @@ import { Categories } from '../screens/Categories';
 import { List } from '../screens/List';
 import { Register } from '../screens/Register';
 import { ListProductsByCategories } from '../screens/ListProductsByCategories';
+import { ListComplete } from '../screens/ListComplete';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ export function AppRoutes() {
         name="listByCategories"
         component={ListProductsByCategories}
       />
+      <Stack.Screen name="listComplete" component={ListComplete} />
     </Stack.Navigator>
   );
 }
