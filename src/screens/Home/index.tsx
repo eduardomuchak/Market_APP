@@ -20,7 +20,10 @@ export function Home() {
 
   return (
     <View className="flex flex-1">
-      <ScrollView className="flex flex-col bg-white rounded-xl pt-8 px-6">
+      <ScrollView
+        className="flex flex-col bg-white rounded-xl pt-8 px-6"
+        showsVerticalScrollIndicator={false}
+      >
         <View className="flex items-end">
           <MarketButton title="Sair" onPress={handleSignOut} variant="ghost" />
         </View>

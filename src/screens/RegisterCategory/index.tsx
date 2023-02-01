@@ -7,7 +7,10 @@ export function RegisterCategory() {
   return (
     <View className="flex flex-1 flex-col items-center">
       <Header title="Cadastro de Categoria" backArrow />
-      <ScrollView className="gap-4 w-full bg-white rounded-lg px-6 my-2 flex-1">
+      <ScrollView
+        className="gap-4 w-full bg-white rounded-lg px-6 my-2 flex-1"
+        showsVerticalScrollIndicator={false}
+      >
         <View className="flex flex-col pt-4 pb-7">
           <View className="mb-3">
             <Input placeholder="Digite" label="NOME" />
