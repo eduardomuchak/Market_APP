@@ -54,8 +54,8 @@ export function RegisterProduct() {
             />
           </View>
         </View>
-        <View className="mb-5 flex flex-1">
-          <Text className="text-labelText font-semibold mb-4">
+        <View className="mb-5 mt-3 flex flex-1">
+          <Text className="text-labelText font-poppinsBold mb-4">
             SELECIONE AS CATEGORIAS:
           </Text>
           <ScrollView showsVerticalScrollIndicator={false}>
