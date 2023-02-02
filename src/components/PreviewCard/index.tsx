@@ -12,7 +12,7 @@ export function PreviewCard({ name }: { name: string }) {
       >
         <View className="bg-category1 rounded-full w-52 h-52" />
         <Text className="font-poppinsSemibold text-2xl text-labelText mt-3">
-          {name.toUpperCase() || 'NOME DA CATEGORIA'}
+          {name || 'NOME DA CATEGORIA'}
         </Text>
       </TouchableOpacity>
     </View>

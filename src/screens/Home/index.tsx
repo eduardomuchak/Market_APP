@@ -52,19 +52,24 @@ export function Home() {
 
         <View className="gap-4 mt-6 flex flex-col">
           <MarketButton
+            title="Cadastrar item ou categoria"
+            variant="primary"
+            onPress={() => navigate('register')}
+          />
+          <MarketButton
             title="Ver listas"
             variant="primary"
             onPress={() => navigate('list')}
           />
+          {/* <MarketButton
+            title="Ver perfil"
+            variant="primary"
+            onPress={() => navigate('profile')}
+          /> */}
           <MarketButton
             title="Ver todas as categorias"
             variant="primary"
             onPress={() => navigate('categories')}
-          />
-          <MarketButton
-            title="Cadastrar item ou categoria"
-            variant="primary"
-            onPress={() => navigate('register')}
           />
         </View>
       </ScrollView>

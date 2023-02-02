@@ -9,6 +9,7 @@ import { ListComplete } from '../screens/ListComplete';
 import { ListOnlyMissing } from '../screens/ListOnlyMissing';
 import { RegisterProduct } from '../screens/RegisterProduct';
 import { RegisterCategory } from '../screens/RegisterCategory';
+import { Profile } from '../screens/Profile';
 
 const Stack = createStackNavigator();
 
@@ -20,6 +21,7 @@ export function AppRoutes() {
       }}
     >
       <Stack.Screen name="home" component={Home} />
+      <Stack.Screen name="profile" component={Profile} />
       <Stack.Screen name="categories" component={Categories} />
       <Stack.Screen name="list" component={List} />
       <Stack.Screen name="register" component={Register} />

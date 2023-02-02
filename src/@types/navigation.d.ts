@@ -12,6 +12,7 @@ export declare global {
       registerProduct: undefined;
       userRegister: undefined;
       login: undefined;
+      profile: undefined;
     }
   }
 }
