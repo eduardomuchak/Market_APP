@@ -10,6 +10,8 @@ export declare global {
       register: undefined;
       registerCategory: undefined;
       registerProduct: undefined;
+      userRegister: undefined;
+      login: undefined;
     }
   }
 }
