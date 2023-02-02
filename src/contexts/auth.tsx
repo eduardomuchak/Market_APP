@@ -1,9 +1,9 @@
 import 'react-native-url-polyfill/auto';
 
+import api from '../services/api';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as auth from '../services/auth';
-import api from '../services/api';
+
 import { supabase } from '../lib/supabase';
 import { Alert } from 'react-native';
 import { Session } from '@supabase/supabase-js';
@@ -77,20 +77,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   useEffect(() => {
-    async function loadStorageData() {
-      const storagedUser = await AsyncStorage.getItem('@Auth:user');
-      const storagedToken = await AsyncStorage.getItem('@Auth:token');
-
-      if (storagedUser && storagedToken) {
-        setUser(JSON.parse(storagedUser));
-        api.defaults.headers.Authorization = `Bearer ${storagedToken}`;
-      }
-      setIsLoading(false);
-    }
-    loadStorageData();
-  }, []);
-
-  useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
@@ -98,6 +84,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
+
+    setIsLoading(false);
   }, []);
 
   return (
