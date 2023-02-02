@@ -20,7 +20,10 @@ export function Home() {
 
   return (
     <View className="flex flex-1">
-      <ScrollView className="flex flex-col bg-white rounded-xl pt-8 px-6">
+      <ScrollView
+        className="flex flex-col bg-white rounded-xl pt-8 px-6"
+        showsVerticalScrollIndicator={false}
+      >
         <View className="flex items-end">
           <MarketButton title="Sair" onPress={handleSignOut} variant="ghost" />
         </View>
@@ -49,19 +52,24 @@ export function Home() {
 
         <View className="gap-4 mt-6 flex flex-col">
           <MarketButton
+            title="Cadastrar item ou categoria"
+            variant="primary"
+            onPress={() => navigate('register')}
+          />
+          <MarketButton
             title="Ver listas"
             variant="primary"
             onPress={() => navigate('list')}
           />
+          {/* <MarketButton
+            title="Ver perfil"
+            variant="primary"
+            onPress={() => navigate('profile')}
+          /> */}
           <MarketButton
             title="Ver todas as categorias"
             variant="primary"
             onPress={() => navigate('categories')}
-          />
-          <MarketButton
-            title="Cadastrar item ou categoria"
-            variant="primary"
-            onPress={() => navigate('register')}
           />
         </View>
       </ScrollView>

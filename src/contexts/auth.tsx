@@ -1,7 +1,12 @@
+import 'react-native-url-polyfill/auto';
+
+import api from '../services/api';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as auth from '../services/auth';
-import api from '../services/api';
+
+import { supabase } from '../lib/supabase';
+import { Alert } from 'react-native';
+import { Session } from '@supabase/supabase-js';
 
 interface User {
   name: string;
@@ -13,7 +18,13 @@ interface AuthContextData {
   user: User | null;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  signIn(): Promise<void>;
+  signIn({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Promise<void>;
   signOut(): void;
 }
 
@@ -22,39 +33,71 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [session, setSession] = useState<Session | null>(null);
 
-  useEffect(() => {
-    async function loadStorageData() {
-      const storagedUser = await AsyncStorage.getItem('@Auth:user');
-      const storagedToken = await AsyncStorage.getItem('@Auth:token');
+  async function signIn({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) {
+    setIsLoading(true);
+    const { error, data } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
 
-      if (storagedUser && storagedToken) {
-        setUser(JSON.parse(storagedUser));
-        api.defaults.headers.Authorization = `Bearer ${storagedToken}`;
-      }
-      setIsLoading(false);
+    if (data && data.session) {
+      const accessToken = data.session.access_token;
+      const user = data.session.user;
+
+      api.defaults.headers.Authorization = `Bearer ${accessToken}`;
+
+      await AsyncStorage.setItem('@Auth:user', JSON.stringify(user));
+      await AsyncStorage.setItem('@Auth:token', accessToken);
     }
-    loadStorageData();
-  }, []);
 
-  async function signIn() {
-    const response = await auth.signIn();
-    setUser(response.user);
-
-    api.defaults.headers.Authorization = `Bearer ${response.token}`;
-
-    await AsyncStorage.setItem('@Auth:user', JSON.stringify(response.user));
-    await AsyncStorage.setItem('@Auth:token', response.token);
+    if (error) {
+      const isInvalidCredential = error.message.includes(
+        'Invalid login credentials',
+      );
+      if (isInvalidCredential) {
+        Alert.alert('Email ou senha inválidos');
+      }
+    }
+    setIsLoading(false);
   }
 
   async function signOut() {
-    await AsyncStorage.clear();
+    setIsLoading(true);
+    await supabase.auth.signOut();
     setUser(null);
+    setIsLoading(false);
   }
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    setIsLoading(false);
+  }, []);
 
   return (
     <AuthContext.Provider
-      value={{ signed: !!user, user, isLoading, setIsLoading, signIn, signOut }}
+      value={{
+        signed: !!session,
+        user,
+        isLoading,
+        setIsLoading,
+        signIn,
+        signOut,
+      }}
     >
       {children}
     </AuthContext.Provider>

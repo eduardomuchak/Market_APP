@@ -1,19 +1,38 @@
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../../contexts/auth';
-import { Text, View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import { Input } from '../../components/ui/Input';
 import { MarketButton } from '../../components/ui/MarketButton';
+import { supabase } from '../../lib/supabase';
 
 import Logo from '../../assets/brand/logo.svg';
 import Circles from '../../assets/style/circles.svg';
 
-export function Login() {
+export function UserRegister() {
   const { navigate } = useNavigation();
-  const { signIn } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  async function signUpWithEmail() {
+    setLoading(true);
+    const { error, data } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
+
+    if (data) {
+      Alert.alert(
+        'Sucesso!',
+        'Finalize o cadastro através do link que você receberá no seu email.',
+      );
+      navigate('login');
+    }
+
+    if (error) Alert.alert(error.message);
+    setLoading(false);
+  }
 
   return (
     <View className="flex flex-1 bg-white">
@@ -23,7 +42,7 @@ export function Login() {
           <Logo />
         </View>
         <Text className="font-poppinsBold text-base">
-          Entre com seu email e senha
+          Cadastre sua conta para continuar
         </Text>
         <View className="mt-10 w-full">
           <View className="flex flex-col gap-3">
@@ -51,19 +70,20 @@ export function Login() {
           </View>
           <View className="mt-8">
             <MarketButton
-              onPress={() => signIn({ email, password })}
-              title="Entrar"
+              disabled={loading}
+              onPress={signUpWithEmail}
+              title="Cadastrar"
               variant="primary"
             />
           </View>
           <View className="flex mx-auto mt-10">
             <Text className="font-poppinsMedium text-sm text-marketBlackText">
-              Não tem uma conta?{' '}
+              Já possui uma conta?{' '}
               <Text
                 className="font-poppinsMedium text-sm text-marketColor"
-                onPress={() => navigate('userRegister')}
+                onPress={() => navigate('login')}
               >
-                Cadastre-se
+                Então faça login
               </Text>
             </Text>
           </View>

@@ -8,6 +8,11 @@ export declare global {
       listOnlyMissing: undefined;
       categories: undefined;
       register: undefined;
+      registerCategory: undefined;
+      registerProduct: undefined;
+      userRegister: undefined;
+      login: undefined;
+      profile: undefined;
     }
   }
 }

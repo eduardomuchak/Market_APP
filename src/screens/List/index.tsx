@@ -3,7 +3,6 @@ import { Header } from '../../components/Header';
 import { MarketButton } from '../../components/ui/MarketButton';
 import { useNavigation } from '@react-navigation/native';
 import BottomBar from '../../components/BottomBar';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 const selectionImage = require('../../assets/illustrations/undraw_selection.png');
 
@@ -13,7 +12,10 @@ export function List() {
   return (
     <View className="flex flex-1 flex-col items-center">
       <Header title="Selecione a lista" backArrow />
-      <ScrollView className="flex flex-col bg-white rounded-xl px-6 py-8 flex-1 mb-4 w-full">
+      <ScrollView
+        className="flex flex-col bg-white rounded-xl px-6 py-8 flex-1 mb-4 w-full"
+        showsVerticalScrollIndicator={false}
+      >
         <View className="flex items-center justify-center">
           <Image source={selectionImage} />
         </View>
