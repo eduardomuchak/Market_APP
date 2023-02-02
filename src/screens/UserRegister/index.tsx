@@ -17,10 +17,18 @@ export function UserRegister() {
 
   async function signUpWithEmail() {
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { error, data } = await supabase.auth.signUp({
       email: email,
       password: password,
     });
+
+    if (data) {
+      Alert.alert(
+        'Sucesso!',
+        'Finalize o cadastro através do link que você receberá no seu email.',
+      );
+      navigate('login');
+    }
 
     if (error) Alert.alert(error.message);
     setLoading(false);
