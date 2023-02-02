@@ -26,6 +26,7 @@ interface AuthContextData {
     password: string;
   }): Promise<void>;
   signOut(): void;
+  signInWithGoogle(): void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -69,6 +70,18 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(false);
   }
 
+  async function signInWithGoogle() {
+    const { data } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+    });
+
+    if (data && data.url) {
+      Alert.alert('Aguarde', 'Redirecionando para o Google');
+    }
+
+    console.log(data);
+  }
+
   async function signOut() {
     setIsLoading(true);
     await supabase.auth.signOut();
@@ -97,6 +110,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoading,
         signIn,
         signOut,
+        signInWithGoogle,
       }}
     >
       {children}
