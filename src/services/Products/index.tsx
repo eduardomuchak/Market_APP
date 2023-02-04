@@ -27,8 +27,8 @@ export const updateProduct = async (
   return data;
 };
 
-export const getToggleCheckedProduct = async (productId: string) => {
-  const { data } = await api.patch(`/products/${productId}/toggle`);
+export const updateToggleCheckedProduct = async (productId: string) => {
+  const { data } = await api.patch(`/product/${productId}/toggle`);
   return data;
 };
 
