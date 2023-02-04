@@ -2,29 +2,44 @@ import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { Header } from '../../components/Header';
 import { Checkbox } from '../../components/Checkbox';
-import { useQuery } from '@tanstack/react-query';
-import { getAllProducts } from '../../services/Products';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import {
+  getAllProducts,
+  updateToggleCheckedProduct,
+} from '../../services/Products';
 
 import BottomBar from '../../components/BottomBar';
 import Loading from '../../components/Loading';
 import { Product } from '../../services/Products/interfaces';
 
 export function ListComplete() {
+  const queryClient = useQueryClient();
+
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   const {
     isLoading,
     error,
     data: products,
-  } = useQuery({ queryKey: ['allProducts'], queryFn: getAllProducts });
+  } = useQuery({ queryKey: ['products'], queryFn: getAllProducts });
+
+  const toggleCheckedProduct = useMutation({
+    mutationFn: updateToggleCheckedProduct,
+    onSuccess: () => {
+      console.log('Produto comprado');
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+  });
+
+  const handleToggleProduct = (id: string) => {
+    toggleCheckedProduct.mutate(id);
+  };
 
   useEffect(() => {
     if (products) {
       setAllProducts(products.products);
     }
   }, [products]);
-
-  console.log(allProducts);
 
   if (isLoading) {
     return <Loading />;
@@ -52,7 +67,7 @@ export function ListComplete() {
                 key={`${index}-${item}`}
                 title={item.name}
                 checked={item.checked}
-                onPress={() => {}}
+                onPress={() => handleToggleProduct(item.id)}
               />
             ))}
         </View>
