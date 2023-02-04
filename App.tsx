@@ -14,6 +14,7 @@ import { AuthProvider } from './src/contexts/auth';
 
 import Loading from './src/components/Loading';
 import Routes from './src/routes';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -30,16 +31,20 @@ export default function App() {
     return <Loading />;
   }
 
+  const queryClient = new QueryClient();
+
   return (
     <NavigationContainer>
-      <StatusBar
-        barStyle={'dark-content'}
-        backgroundColor={'transparent'}
-        translucent={true}
-      />
-      <AuthProvider>
-        <Routes />
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <StatusBar
+          barStyle={'dark-content'}
+          backgroundColor={'transparent'}
+          translucent={true}
+        />
+        <AuthProvider>
+          <Routes />
+        </AuthProvider>
+      </QueryClientProvider>
     </NavigationContainer>
   );
 }

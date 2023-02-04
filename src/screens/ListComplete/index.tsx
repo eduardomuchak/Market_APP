@@ -1,27 +1,38 @@
+import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { Header } from '../../components/Header';
 import { Checkbox } from '../../components/Checkbox';
+import { useQuery } from '@tanstack/react-query';
+import { getAllProducts } from '../../services/Products';
+
 import BottomBar from '../../components/BottomBar';
+import Loading from '../../components/Loading';
+import { Product } from '../../services/Products/interfaces';
 
 export function ListComplete() {
-  const data = [
-    {
-      id: 1,
-      content: 'Água com Gás',
-    },
-    {
-      id: 2,
-      content: 'Coca Zero',
-    },
-    {
-      id: 3,
-      content: 'Vodka',
-    },
-    {
-      id: 4,
-      content: 'Leite',
-    },
-  ];
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+
+  const {
+    isLoading,
+    error,
+    data: products,
+  } = useQuery({ queryKey: ['allProducts'], queryFn: getAllProducts });
+
+  useEffect(() => {
+    if (products) {
+      setAllProducts(products.products);
+    }
+  }, [products]);
+
+  console.log(allProducts);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <Text>Erro ao carregar os produtos</Text>;
+  }
 
   return (
     <View className="flex flex-1 flex-col items-center">
@@ -34,13 +45,13 @@ export function ListComplete() {
           ITENS
         </Text>
         <View className="mt-3">
-          {data
-            .sort((a, b) => a.content.localeCompare(b.content))
+          {allProducts
+            .sort((a, b) => a.name.localeCompare(b.name))
             .map((item, index) => (
               <Checkbox
                 key={`${index}-${item}`}
-                title={item.content}
-                checked={false}
+                title={item.name}
+                checked={item.checked}
                 onPress={() => {}}
               />
             ))}

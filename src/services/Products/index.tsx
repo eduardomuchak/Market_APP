@@ -1,10 +1,10 @@
 import { api } from '../../lib/axios';
-import { CreateProduct } from './interfaces';
+import { CreateProduct, GetAllProducts } from './interfaces';
 
 // GET REQUESTS
 export const getAllProducts = async () => {
   const { data } = await api.get('/products');
-  return data;
+  return data as GetAllProducts;
 };
 
 export const getProductByCategoryId = async (categoryId: string) => {
