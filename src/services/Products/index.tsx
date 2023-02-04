@@ -1,16 +1,39 @@
 import { api } from '../../lib/axios';
+import { CreateProduct } from './interfaces';
 
+// GET REQUESTS
 export const getAllProducts = async () => {
-  const response = await api.get('/products');
-  return response.data;
+  const { data } = await api.get('/products');
+  return data;
 };
 
-export const getProductById = async (id: string) => {
-  const response = await api.get(`/products/${id}`);
-  return response.data;
+export const getProductByCategoryId = async (categoryId: string) => {
+  const { data } = await api.get(`/products/${categoryId}`);
+  return data;
 };
 
-export const getProductsByCategory = async (category: string) => {
-  const response = await api.get(`/products?category=${category}`);
-  return response.data;
+// POST REQUESTS
+export const createProduct = async (payload: CreateProduct) => {
+  const { data } = await api.post('/product', payload);
+  return data;
+};
+
+// PATCH REQUESTS
+export const updateProduct = async (
+  productId: string,
+  payload: CreateProduct,
+) => {
+  const { data } = await api.patch(`/product/${productId}`, payload);
+  return data;
+};
+
+export const getToggleCheckedProduct = async (productId: string) => {
+  const { data } = await api.patch(`/products/${productId}/toggle`);
+  return data;
+};
+
+// DELETE REQUESTS
+export const deleteProduct = async (productId: string) => {
+  const { data } = await api.delete(`/product/${productId}`);
+  return data;
 };

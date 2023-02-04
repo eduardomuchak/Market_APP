@@ -1,12 +1,12 @@
 import 'react-native-url-polyfill/auto';
 
-import api from '../services/api';
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { supabase } from '../lib/supabase';
 import { Alert } from 'react-native';
 import { Session } from '@supabase/supabase-js';
+import { api } from '../lib/axios';
 
 interface User {
   name: string;
