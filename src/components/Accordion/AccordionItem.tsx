@@ -71,14 +71,16 @@ export function AccordionItem({
       {showContent ? (
         <View className="mt-3">
           {content.length > 0 ? (
-            content.map((item, index) => (
-              <Checkbox
-                key={`${index}-${item.name}`}
-                title={item.name}
-                checked={item.checked}
-                onPress={() => handleToggleProduct(item.id)}
-              />
-            ))
+            content
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((item, index) => (
+                <Checkbox
+                  key={`${index}-${item.name}`}
+                  title={item.name}
+                  checked={item.checked}
+                  onPress={() => handleToggleProduct(item.id)}
+                />
+              ))
           ) : (
             <Text className="text-sm font-poppinsBold text-marketBlackText leading-4">
               Nenhum item encontrado para esta categoria
