@@ -13,6 +13,7 @@ import Loading from '../../components/Loading';
 import { getAllCategories } from '../../services/Category';
 import { createProduct } from '../../services/Products';
 import { Category } from '../../services/Category/interfaces';
+import { useNavigation } from '@react-navigation/native';
 
 interface CheckedCategory extends Category {
   checked?: boolean;
@@ -20,6 +21,7 @@ interface CheckedCategory extends Category {
 
 export function RegisterProduct() {
   const queryClient = useQueryClient();
+  const { navigate } = useNavigation();
 
   const [name, setName] = useState('');
   const [allCategories, setAllCategories] = useState<Category[]>([]);
@@ -52,6 +54,7 @@ export function RegisterProduct() {
       Alert.alert('Produto cadastrado com sucesso!');
       setName('');
       setCheckedCategories([]);
+      navigate('register');
     }
   };
 

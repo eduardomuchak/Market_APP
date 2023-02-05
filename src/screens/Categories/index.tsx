@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { useQuery } from '@tanstack/react-query';
+
 import { Header } from '../../components/Header';
 import { CategoryCard } from '../../components/CategoryCard';
 import { RegisterCategoryCard } from '../../components/RegisterCategoryCard';
 import { Category } from '../../services/Category/interfaces';
-
-import BottomBar from '../../components/BottomBar';
-import { getAllCategories } from '../../services/Category';
-import { useQuery } from '@tanstack/react-query';
-import Loading from '../../components/Loading';
 import { RequestError } from '../../components/RequestError';
+import BottomBar from '../../components/BottomBar';
+import Loading from '../../components/Loading';
+
+import { getAllCategories } from '../../services/Category';
 
 export function Categories() {
   const [allCategories, setAllCategories] = useState<Category[]>([]);

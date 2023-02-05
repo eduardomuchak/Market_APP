@@ -1,15 +1,19 @@
 import { useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { Header } from '../../components/Header';
 import { Input } from '../../components/ui/Input';
 import { PreviewCard } from '../../components/PreviewCard';
 import { MarketButton } from '../../components/ui/MarketButton';
 import BottomBar from '../../components/BottomBar';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import { createCategory } from '../../services/Category';
+import { useNavigation } from '@react-navigation/native';
 
 export function RegisterCategory() {
   const queryClient = useQueryClient();
+  const { navigate } = useNavigation();
 
   const [name, setName] = useState('');
 
@@ -30,6 +34,7 @@ export function RegisterCategory() {
     } finally {
       Alert.alert('Categoria cadastrada com sucesso!');
       setName('');
+      navigate('register');
     }
   };
 
