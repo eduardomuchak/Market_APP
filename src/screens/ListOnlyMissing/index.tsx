@@ -2,18 +2,54 @@ import { ScrollView, Text, View } from 'react-native';
 import { Header } from '../../components/Header';
 import { Checkbox } from '../../components/Checkbox';
 import BottomBar from '../../components/BottomBar';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { Product } from '../../services/Products/interfaces';
+import {
+  getAllProducts,
+  updateToggleCheckedProduct,
+} from '../../services/Products';
+import Loading from '../../components/Loading';
+import { RequestError } from '../../components/RequestError';
 
 export function ListOnlyMissing() {
-  const data = [
-    {
-      id: 1,
-      content: 'Água com Gás',
+  const queryClient = useQueryClient();
+  const [onlyMissingProducts, setOnlyMissingProducts] = useState<Product[]>([]);
+
+  const {
+    isLoading,
+    error,
+    data: products,
+  } = useQuery({ queryKey: ['products'], queryFn: getAllProducts });
+
+  const toggleCheckedProduct = useMutation({
+    mutationFn: updateToggleCheckedProduct,
+    onSuccess: () => {
+      console.log('Produto comprado');
+      queryClient.invalidateQueries({ queryKey: ['products'] });
     },
-    {
-      id: 2,
-      content: 'Coca Zero',
-    },
-  ];
+  });
+
+  const handleToggleProduct = (id: string) => {
+    toggleCheckedProduct.mutate(id);
+  };
+
+  useEffect(() => {
+    if (products) {
+      const onlyMissing = products.products.filter(
+        (product) => product.checked === false,
+      );
+      setOnlyMissingProducts(onlyMissing);
+    }
+  }, [products]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <RequestError />;
+  }
   return (
     <View className="flex flex-1 flex-col items-center">
       <Header title="Completa" backArrow />
@@ -25,14 +61,14 @@ export function ListOnlyMissing() {
           ITENS
         </Text>
         <View className="mt-3">
-          {data
-            .sort((a, b) => a.content.localeCompare(b.content))
+          {onlyMissingProducts
+            .sort((a, b) => a.name.localeCompare(b.name))
             .map((item, index) => (
               <Checkbox
                 key={`${index}-${item}`}
-                title={item.content}
-                checked={false}
-                onPress={() => {}}
+                title={item.name}
+                checked={item.checked}
+                onPress={() => handleToggleProduct(item.id)}
               />
             ))}
         </View>
