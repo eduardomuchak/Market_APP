@@ -1,3 +1,7 @@
+export interface CreateCategory {
+  name: string;
+}
+
 export interface Category {
   id: string;
   name: string;

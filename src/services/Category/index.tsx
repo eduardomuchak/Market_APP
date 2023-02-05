@@ -1,5 +1,5 @@
 import { api } from '../../lib/axios';
-import { AllCategories, Category } from './interfaces';
+import { AllCategories, Category, CreateCategory } from './interfaces';
 
 // GET REQUESTS
 export const getAllCategories = async () => {
@@ -8,19 +8,19 @@ export const getAllCategories = async () => {
 };
 
 // POST REQUESTS
-export const createCategory = async (payload: Category) => {
-  const { data } = await api.post('/category', payload);
+export const createCategory = async (payload: CreateCategory) => {
+  const { data } = await api.post('/categories', payload);
   return data;
 };
 
 // PATCH REQUESTS
 export const updateCategory = async (categoryId: string, payload: Category) => {
-  const { data } = await api.patch(`/category/${categoryId}`, payload);
+  const { data } = await api.patch(`/categories/${categoryId}`, payload);
   return data;
 };
 
 // DELETE REQUESTS
 export const deleteCategory = async (categoryId: string) => {
-  const { data } = await api.delete(`/category/${categoryId}`);
+  const { data } = await api.delete(`/categories/${categoryId}`);
   return data;
 };

@@ -6,13 +6,13 @@ import { Header } from '../../components/Header';
 import { Input } from '../../components/ui/Input';
 import { MarketButton } from '../../components/ui/MarketButton';
 import { Checkbox } from '../../components/Checkbox';
+import { RequestError } from '../../components/RequestError';
 import BottomBar from '../../components/BottomBar';
 import Loading from '../../components/Loading';
 
 import { getAllCategories } from '../../services/Category';
 import { createProduct } from '../../services/Products';
 import { Category } from '../../services/Category/interfaces';
-import { RequestError } from '../../components/RequestError';
 
 interface CheckedCategory extends Category {
   checked?: boolean;
@@ -81,7 +81,7 @@ export function RegisterProduct() {
     return <Loading />;
   }
 
-  if (!error) {
+  if (error) {
     return <RequestError />;
   }
 

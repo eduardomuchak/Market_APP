@@ -1,13 +1,37 @@
 import { useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { Alert, ScrollView, View } from 'react-native';
 import { Header } from '../../components/Header';
 import { Input } from '../../components/ui/Input';
 import { PreviewCard } from '../../components/PreviewCard';
 import { MarketButton } from '../../components/ui/MarketButton';
 import BottomBar from '../../components/BottomBar';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { createCategory } from '../../services/Category';
 
 export function RegisterCategory() {
+  const queryClient = useQueryClient();
+
   const [name, setName] = useState('');
+
+  const registerCategory = useMutation({
+    mutationFn: createCategory,
+    onSuccess: () => {
+      console.log('Categoria Cadastrada');
+      queryClient.invalidateQueries({ queryKey: ['categories'] });
+    },
+  });
+
+  const handleRegisterCategory = () => {
+    const payload = { name };
+    try {
+      registerCategory.mutate(payload);
+    } catch (error) {
+      Alert.alert('Opa!, algo deu errado', 'Tente novamente');
+    } finally {
+      Alert.alert('Categoria cadastrada com sucesso!');
+      setName('');
+    }
+  };
 
   return (
     <View className="flex flex-1 flex-col items-center">
@@ -28,7 +52,11 @@ export function RegisterCategory() {
           <Input placeholder="Opção 1" label="ÍCONE" />
         </View>
         <PreviewCard name={name} />
-        <MarketButton title="Cadastrar" variant="primary" onPress={() => {}} />
+        <MarketButton
+          title="Cadastrar"
+          variant="primary"
+          onPress={() => handleRegisterCategory()}
+        />
       </ScrollView>
       <BottomBar />
     </View>

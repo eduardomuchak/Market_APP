@@ -11,6 +11,7 @@ import {
 import BottomBar from '../../components/BottomBar';
 import Loading from '../../components/Loading';
 import { Product } from '../../services/Products/interfaces';
+import { RequestError } from '../../components/RequestError';
 
 export function ListComplete() {
   const queryClient = useQueryClient();
@@ -45,7 +46,7 @@ export function ListComplete() {
   }
 
   if (error) {
-    return <Text>Erro ao carregar os produtos</Text>;
+    return <RequestError />;
   }
 
   return (

@@ -9,6 +9,7 @@ import BottomBar from '../../components/BottomBar';
 import { getAllCategories } from '../../services/Category';
 import { useQuery } from '@tanstack/react-query';
 import Loading from '../../components/Loading';
+import { RequestError } from '../../components/RequestError';
 
 export function Categories() {
   const [allCategories, setAllCategories] = useState<Category[]>([]);
@@ -30,7 +31,7 @@ export function Categories() {
   }
 
   if (error) {
-    return <Text>Erro ao carregar as categorias</Text>;
+    return <RequestError />;
   }
 
   return (
