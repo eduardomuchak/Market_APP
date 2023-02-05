@@ -14,7 +14,6 @@ import { Product } from '../../services/Products/interfaces';
 
 export function ListComplete() {
   const queryClient = useQueryClient();
-
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   const {
