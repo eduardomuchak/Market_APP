@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { Alert, ScrollView, Text, View } from 'react-native';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 import { Header } from '../../components/Header';
 import { Input } from '../../components/ui/Input';
 import { MarketButton } from '../../components/ui/MarketButton';
-import BottomBar from '../../components/BottomBar';
 import { Checkbox } from '../../components/Checkbox';
+import BottomBar from '../../components/BottomBar';
+import Loading from '../../components/Loading';
+
 import { getAllCategories } from '../../services/Category';
 import { createProduct } from '../../services/Products';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Category } from '../../services/Category/interfaces';
-import Loading from '../../components/Loading';
+import { RequestError } from '../../components/RequestError';
 
 interface CheckedCategory extends Category {
   checked?: boolean;
@@ -41,8 +44,15 @@ export function RegisterProduct() {
   const handleRegisterProduct = () => {
     const categoriesIds = checkedCategories.map((category) => category.id);
     const payload = { name, categoriesIds };
-
-    registerProduct.mutate(payload);
+    try {
+      registerProduct.mutate(payload);
+    } catch (error) {
+      Alert.alert('Opa!, algo deu errado', 'Tente novamente');
+    } finally {
+      Alert.alert('Produto cadastrado com sucesso!');
+      setName('');
+      setCheckedCategories([]);
+    }
   };
 
   const handleCheckCategory = (category: CheckedCategory) => {
@@ -71,8 +81,8 @@ export function RegisterProduct() {
     return <Loading />;
   }
 
-  if (error) {
-    return <Text>Erro ao carregar as categorias</Text>;
+  if (!error) {
+    return <RequestError />;
   }
 
   return (
