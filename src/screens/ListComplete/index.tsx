@@ -26,7 +26,6 @@ export function ListComplete() {
   const toggleCheckedProduct = useMutation({
     mutationFn: updateToggleCheckedProduct,
     onSuccess: () => {
-      console.log('Produto comprado');
       queryClient.invalidateQueries({ queryKey: ['products'] });
     },
   });

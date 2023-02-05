@@ -6,17 +6,23 @@ import {
   View,
   Animated,
   LayoutAnimation,
+  Alert,
 } from 'react-native';
 import { toggleAnimations } from '../../animations/ToggleAnimations';
 import { Checkbox } from '../Checkbox';
+import { Product } from '../../services/Products/interfaces';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { updateToggleCheckedProduct } from '../../services/Products';
 
 export function AccordionItem({
   title,
   content,
 }: {
   title: string;
-  content: string[];
+  content: Product[];
 }) {
+  const queryClient = useQueryClient();
+
   const [showContent, setShowContent] = useState(false);
   const animationController = useRef(new Animated.Value(0)).current;
 
@@ -36,6 +42,17 @@ export function AccordionItem({
     outputRange: ['0deg', '180deg'],
   });
 
+  const toggleCheckedProduct = useMutation({
+    mutationFn: updateToggleCheckedProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+    },
+  });
+
+  const handleToggleProduct = (id: string) => {
+    toggleCheckedProduct.mutate(id);
+  };
+
   return (
     <TouchableOpacity
       activeOpacity={0.7}
@@ -53,14 +70,20 @@ export function AccordionItem({
 
       {showContent ? (
         <View className="mt-3">
-          {content.map((item, index) => (
-            <Checkbox
-              key={`${index}-${item}`}
-              title={item}
-              checked={true}
-              onPress={() => {}}
-            />
-          ))}
+          {content.length > 0 ? (
+            content.map((item, index) => (
+              <Checkbox
+                key={`${index}-${item.name}`}
+                title={item.name}
+                checked={item.checked}
+                onPress={() => handleToggleProduct(item.id)}
+              />
+            ))
+          ) : (
+            <Text className="text-sm font-poppinsBold text-marketBlackText leading-4">
+              Nenhum item encontrado para esta categoria
+            </Text>
+          )}
         </View>
       ) : null}
     </TouchableOpacity>
