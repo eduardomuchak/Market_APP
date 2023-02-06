@@ -1,27 +1,52 @@
+import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { Header } from '../../components/Header';
 import { Checkbox } from '../../components/Checkbox';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import {
+  getAllProducts,
+  updateToggleCheckedProduct,
+} from '../../services/Products';
+
 import BottomBar from '../../components/BottomBar';
+import Loading from '../../components/Loading';
+import { Product } from '../../services/Products/interfaces';
+import { RequestError } from '../../components/RequestError';
 
 export function ListComplete() {
-  const data = [
-    {
-      id: 1,
-      content: 'Água com Gás',
+  const queryClient = useQueryClient();
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+
+  const {
+    isLoading,
+    error,
+    data: products,
+  } = useQuery({ queryKey: ['products'], queryFn: getAllProducts });
+
+  const toggleCheckedProduct = useMutation({
+    mutationFn: updateToggleCheckedProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['products'] });
     },
-    {
-      id: 2,
-      content: 'Coca Zero',
-    },
-    {
-      id: 3,
-      content: 'Vodka',
-    },
-    {
-      id: 4,
-      content: 'Leite',
-    },
-  ];
+  });
+
+  const handleToggleProduct = (id: string) => {
+    toggleCheckedProduct.mutate(id);
+  };
+
+  useEffect(() => {
+    if (products) {
+      setAllProducts(products.products);
+    }
+  }, [products]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <RequestError />;
+  }
 
   return (
     <View className="flex flex-1 flex-col items-center">
@@ -34,14 +59,14 @@ export function ListComplete() {
           ITENS
         </Text>
         <View className="mt-3">
-          {data
-            .sort((a, b) => a.content.localeCompare(b.content))
+          {allProducts
+            .sort((a, b) => a.name.localeCompare(b.name))
             .map((item, index) => (
               <Checkbox
                 key={`${index}-${item}`}
-                title={item.content}
-                checked={false}
-                onPress={() => {}}
+                title={item.name}
+                checked={item.checked}
+                onPress={() => handleToggleProduct(item.id)}
               />
             ))}
         </View>

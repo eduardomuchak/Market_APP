@@ -1,32 +1,23 @@
 import { FlatList } from 'react-native';
 import { AccordionItem } from './AccordionItem';
+import { Product } from '../../services/Products/interfaces';
 
-export function AccordionList() {
-  const data = [
-    {
-      id: 1,
-      title: 'Bebidas',
-      content: [
-        'Content 1',
-        'Content 2',
-        'Content 1',
-        'Content 2',
-        'Content 1',
-        'Content 2',
-      ],
-    },
-    { id: 2, title: 'Comidas', content: ['Content 1', 'Content 2'] },
-    { id: 3, title: 'Lanchoes', content: ['Content 1', 'Content 2'] },
-    { id: 4, title: 'Limpeza', content: ['Content 1', 'Content 2'] },
-  ];
+interface Props {
+  productsByCategories: {
+    categoryId: string;
+    categoryName: string;
+    products: Product[];
+  }[];
+}
 
+export function AccordionList({ productsByCategories }: Props) {
   return (
     <FlatList
       className="px-2"
-      data={data}
-      keyExtractor={(item) => String(item.id)}
+      data={productsByCategories}
+      keyExtractor={(item) => String(item.categoryId)}
       renderItem={({ item }) => (
-        <AccordionItem title={item.title} content={item.content} />
+        <AccordionItem title={item.categoryName} content={item.products} />
       )}
     />
   );

@@ -1,44 +1,92 @@
-import { useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Alert, ScrollView, Text, View } from 'react-native';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
 import { Header } from '../../components/Header';
 import { Input } from '../../components/ui/Input';
 import { MarketButton } from '../../components/ui/MarketButton';
-import BottomBar from '../../components/BottomBar';
 import { Checkbox } from '../../components/Checkbox';
+import { RequestError } from '../../components/RequestError';
+import BottomBar from '../../components/BottomBar';
+import Loading from '../../components/Loading';
+
+import { getAllCategories } from '../../services/Category';
+import { createProduct } from '../../services/Products';
+import { Category } from '../../services/Category/interfaces';
+import { useNavigation } from '@react-navigation/native';
+
+interface CheckedCategory extends Category {
+  checked?: boolean;
+}
 
 export function RegisterProduct() {
-  const [name, setName] = useState('');
+  const queryClient = useQueryClient();
+  const { navigate } = useNavigation();
 
-  const mock = [
-    {
-      id: 1,
-      category: 'Frutas',
+  const [name, setName] = useState('');
+  const [allCategories, setAllCategories] = useState<Category[]>([]);
+  const [checkedCategories, setCheckedCategories] = useState<CheckedCategory[]>(
+    [],
+  );
+
+  const {
+    isLoading,
+    error,
+    data: categories,
+  } = useQuery({ queryKey: ['categories'], queryFn: getAllCategories });
+
+  const registerProduct = useMutation({
+    mutationFn: createProduct,
+    onSuccess: () => {
+      console.log('Produto Cadastrado');
+      queryClient.invalidateQueries({ queryKey: ['products'] });
     },
-    {
-      id: 2,
-      category: 'Verduras',
-    },
-    {
-      id: 3,
-      category: 'Legumes',
-    },
-    {
-      id: 4,
-      category: 'Carnes',
-    },
-    {
-      id: 5,
-      category: 'Bebidas',
-    },
-    {
-      id: 6,
-      category: 'Laticínios',
-    },
-    {
-      id: 7,
-      category: 'Padaria',
-    },
-  ];
+  });
+
+  const handleRegisterProduct = () => {
+    const categoriesIds = checkedCategories.map((category) => category.id);
+    const payload = { name, categoriesIds };
+    try {
+      registerProduct.mutate(payload);
+    } catch (error) {
+      Alert.alert('Opa!, algo deu errado', 'Tente novamente');
+    } finally {
+      Alert.alert('Produto cadastrado com sucesso!');
+      setName('');
+      setCheckedCategories([]);
+      navigate('register');
+    }
+  };
+
+  const handleCheckCategory = (category: CheckedCategory) => {
+    const checkedCategory = checkedCategories.find(
+      (checkedCategory) => checkedCategory.id === category.id,
+    );
+
+    if (checkedCategory) {
+      const newCheckedCategories = checkedCategories.filter(
+        (checkedCategory) => checkedCategory.id !== category.id,
+      );
+
+      setCheckedCategories(newCheckedCategories);
+    } else {
+      setCheckedCategories([...checkedCategories, category]);
+    }
+  };
+
+  useEffect(() => {
+    if (categories) {
+      setAllCategories(categories.categories);
+    }
+  }, [categories]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <RequestError />;
+  }
 
   return (
     <View className="flex flex-1 flex-col items-center">
@@ -59,19 +107,30 @@ export function RegisterProduct() {
             SELECIONE AS CATEGORIAS:
           </Text>
           <ScrollView showsVerticalScrollIndicator={false}>
-            {mock.map((category) => {
+            {allCategories.map((category) => {
               return (
                 <Checkbox
-                  key={`${category.id}-${category.category}`}
-                  title={category.category}
-                  checked
+                  key={`${category.id}-${category.name}`}
+                  title={category.name}
+                  checked={
+                    checkedCategories.find(
+                      (checkedCategory) => checkedCategory.id === category.id,
+                    )
+                      ? true
+                      : false
+                  }
+                  onPress={() => handleCheckCategory(category)}
                 />
               );
             })}
           </ScrollView>
         </View>
 
-        <MarketButton title="Cadastrar" variant="primary" onPress={() => {}} />
+        <MarketButton
+          title="Cadastrar"
+          variant="primary"
+          onPress={() => handleRegisterProduct()}
+        />
       </View>
       <BottomBar />
     </View>
