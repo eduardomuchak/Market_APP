@@ -10,7 +10,7 @@ export function PreviewCard({ name }: { name: string }) {
         className="bg-white rounded-md flex flex-col items-center justify-center border-2 border-category1 py-10 w-full"
         activeOpacity={0.7}
       >
-        <View className="bg-category1 rounded-full w-52 h-52" />
+        <View className="bg-category1 rounded-full w-40 h-40" />
         <Text className="font-poppinsSemibold text-2xl text-labelText mt-3">
           {name || 'NOME DA CATEGORIA'}
         </Text>

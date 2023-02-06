@@ -46,14 +46,13 @@ export function RegisterCategory() {
         showsVerticalScrollIndicator={false}
       >
         <View className="flex flex-col pt-4 pb-7">
-          <View className="mb-3">
-            <Input
-              placeholder="Digite"
-              label="NOME"
-              onChangeText={(text) => setName(text)}
-              maxLength={20}
-            />
-          </View>
+          <Input
+            placeholder="Digite"
+            label="NOME"
+            onChangeText={(text) => setName(text)}
+            maxLength={20}
+          />
+
           <Input placeholder="Opção 1" label="ÍCONE" />
         </View>
         <PreviewCard name={name} />
