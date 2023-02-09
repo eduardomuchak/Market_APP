@@ -1,10 +1,7 @@
-import { useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { iconSwitch } from '../../utils/iconSwitch';
 
 export function PreviewCard({ name, icon }: { name: string; icon: string }) {
-  const [selectedIcon, setSelectedIcon] = useState('');
-
   return (
     <View className="flex items-center justify-center flex-col flex-1 mb-5">
       <Text className="font-poppinsBold text-md leading-4 text-marketBlackText self-start mb-5">

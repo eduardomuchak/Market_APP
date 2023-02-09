@@ -13,7 +13,6 @@ interface Props extends TouchableOpacityProps {
 }
 
 export function CategoryCard({ categoryName, categoryIcon, ...rest }: Props) {
-  console.log('categoryIcon', categoryIcon);
   return (
     <TouchableOpacity
       className="bg-white rounded-md flex flex-col items-center justify-center w-[120px] h-[120px] mx-1 mb-2"
