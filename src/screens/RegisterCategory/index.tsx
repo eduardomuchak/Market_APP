@@ -10,12 +10,15 @@ import BottomBar from '../../components/BottomBar';
 
 import { createCategory } from '../../services/Category';
 import { useNavigation } from '@react-navigation/native';
+import { Select } from '../../components/ui/Select';
+import { categoriesToSelect } from '../../utils/categoriesToSelect';
 
 export function RegisterCategory() {
   const queryClient = useQueryClient();
   const { navigate } = useNavigation();
 
   const [name, setName] = useState('');
+  const [selectedIcon, setSelectedIcon] = useState('');
 
   const registerCategory = useMutation({
     mutationFn: createCategory,
@@ -55,9 +58,14 @@ export function RegisterCategory() {
             />
           </View>
 
-          <Input placeholder="Opção 1" label="ÍCONE" />
+          <Select
+            label="ÍCONE"
+            selected={selectedIcon}
+            setSelected={setSelectedIcon}
+            options={categoriesToSelect.sort((a, b) => a.localeCompare(b))}
+          />
         </View>
-        <PreviewCard name={name} />
+        <PreviewCard name={name} icon={selectedIcon} />
         <MarketButton
           title="Cadastrar"
           variant="primary"
