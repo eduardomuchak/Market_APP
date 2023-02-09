@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -29,7 +29,7 @@ export function RegisterCategory() {
   });
 
   const handleRegisterCategory = () => {
-    const payload = { name };
+    const payload = { name, icon: selectedIcon };
     try {
       registerCategory.mutate(payload);
     } catch (error) {

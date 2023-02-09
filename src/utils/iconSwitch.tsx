@@ -41,7 +41,7 @@ export const iconSwitch = (icon: string) => {
       return PetFood;
     case 'Suplementos':
       return Suplementos;
-    case 'Graos e Cereais':
+    case 'Grãos e Cereais':
       return GraosECereais;
     case 'Doces':
       return Doces;

@@ -15,6 +15,8 @@ import { getAllCategories } from '../../services/Category';
 export function Categories() {
   const [allCategories, setAllCategories] = useState<Category[]>([]);
 
+  console.log('allCategories', allCategories);
+
   const {
     isLoading,
     error,
@@ -44,6 +46,7 @@ export function Categories() {
             <CategoryCard
               key={`${category.id}-${category.name}`}
               categoryName={category.name}
+              categoryIcon={category.icon}
             />
           ))}
           <RegisterCategoryCard />

@@ -1,5 +1,4 @@
 import { Picker } from '@react-native-picker/picker';
-import { useState } from 'react';
 import { Text, View } from 'react-native';
 
 export function Select({
@@ -22,7 +21,13 @@ export function Select({
         <Picker
           selectedValue={selected}
           onValueChange={(itemValue) => setSelected(itemValue)}
-          style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }}
+          style={{
+            position: 'absolute',
+            left: 10,
+            right: 0,
+            top: 0,
+            bottom: 0,
+          }}
         >
           {options.length ? (
             options.map((option) => (
@@ -31,7 +36,7 @@ export function Select({
                 value={option}
                 style={{
                   fontFamily: 'Poppins_600SemiBold',
-                  fontSize: 18,
+                  fontSize: 14,
                   lineHeight: 24,
                   color: '#333333',
                 }}
