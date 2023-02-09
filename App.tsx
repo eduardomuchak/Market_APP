@@ -1,4 +1,6 @@
-import { StatusBar, View } from 'react-native';
+import 'react-native-gesture-handler';
+
+import { StatusBar } from 'react-native';
 import {
   useFonts,
   Poppins_300Light,
