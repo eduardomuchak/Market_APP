@@ -31,6 +31,17 @@ export function ListOnlyMissing() {
 
   const handleToggleProduct = (id: string) => {
     toggleCheckedProduct.mutate(id);
+    setOnlyMissingProducts((prevState) =>
+      prevState.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            checked: !item.checked,
+          };
+        }
+        return item;
+      }),
+    );
   };
 
   useEffect(() => {
