@@ -30,8 +30,9 @@ export function Select({
           }}
         >
           {options.length ? (
-            options.map((option) => (
+            options.map((option, index) => (
               <Picker.Item
+                key={`${index}-${option}`}
                 label={option}
                 value={option}
                 style={{
