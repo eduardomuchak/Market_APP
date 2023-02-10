@@ -51,6 +51,11 @@ export function AccordionItem({
 
   const handleToggleProduct = (id: string) => {
     toggleCheckedProduct.mutate(id);
+    content.map((item) => {
+      if (item.id === id) {
+        item.checked = !item.checked;
+      }
+    });
   };
 
   return (
@@ -82,7 +87,7 @@ export function AccordionItem({
                 />
               ))
           ) : (
-            <Text className="text-sm font-poppinsBold text-marketBlackText leading-4">
+            <Text className="text-sm font-poppinsSemibold text-marketBlackText leading-4 my-4">
               Nenhum item encontrado para esta categoria
             </Text>
           )}

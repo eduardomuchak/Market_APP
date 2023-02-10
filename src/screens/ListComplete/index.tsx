@@ -31,6 +31,17 @@ export function ListComplete() {
   });
 
   const handleToggleProduct = (id: string) => {
+    setAllProducts((prevState) =>
+      prevState.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            checked: !item.checked,
+          };
+        }
+        return item;
+      }),
+    );
     toggleCheckedProduct.mutate(id);
   };
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 
 import { Header } from '../../components/Header';
@@ -40,12 +40,21 @@ export function Categories() {
       <Header title="Selecione a categoria" backArrow />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex flex-1 flex-row flex-wrap justify-center">
-          {allCategories.map((category) => (
-            <CategoryCard
-              key={`${category.id}-${category.name}`}
-              categoryName={category.name}
-            />
-          ))}
+          {allCategories.length ? (
+            allCategories.map((category) => (
+              <CategoryCard
+                key={`${category.id}-${category.name}`}
+                categoryName={category.name}
+                categoryIcon={category.icon}
+              />
+            ))
+          ) : (
+            <View className="flex flex-1 flex-col items-center justify-center">
+              <Text className="text-xl font-poppinsSemibold text-marketBlackText">
+                Nenhuma categoria cadastrada
+              </Text>
+            </View>
+          )}
           <RegisterCategoryCard />
         </View>
       </ScrollView>
