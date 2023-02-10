@@ -2,9 +2,11 @@ import React from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
 import { useAuth } from '../../contexts/auth';
 import { MarketButton } from '../../components/ui/MarketButton';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import BottomBar from '../../components/BottomBar';
+import { getAllProducts } from '../../services/Products';
+import { getAllCategories } from '../../services/Category';
+import { useQuery } from '@tanstack/react-query';
 
 // import HomeSVG from '../../assets/illustrations/undraw_fall.svg';
 const homeImage = require('../../assets/illustrations/undraw_fall.png');
@@ -17,6 +19,9 @@ export function Home() {
   }
 
   const { navigate } = useNavigation();
+
+  useQuery({ queryKey: ['products'], queryFn: getAllProducts });
+  useQuery({ queryKey: ['categories'], queryFn: getAllCategories });
 
   return (
     <View className="flex flex-1">

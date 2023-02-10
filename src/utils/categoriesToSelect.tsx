@@ -10,7 +10,7 @@ export const categoriesToSelect = [
   'Jardinagem',
   'Pet Food',
   'Suplementos',
-  'Graos e Cereais',
+  'Grãos e Cereais',
   'Doces',
   'Legumes',
   'Carne',

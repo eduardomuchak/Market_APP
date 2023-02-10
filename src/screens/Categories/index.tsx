@@ -15,8 +15,6 @@ import { getAllCategories } from '../../services/Category';
 export function Categories() {
   const [allCategories, setAllCategories] = useState<Category[]>([]);
 
-  console.log('allCategories', allCategories);
-
   const {
     isLoading,
     error,

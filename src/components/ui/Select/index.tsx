@@ -23,7 +23,7 @@ export function Select({
           onValueChange={(itemValue) => setSelected(itemValue)}
           style={{
             position: 'absolute',
-            left: 10,
+            left: 6,
             right: 0,
             top: 0,
             bottom: 0,
