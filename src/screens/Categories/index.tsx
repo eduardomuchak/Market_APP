@@ -41,13 +41,15 @@ export function Categories() {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex flex-1 flex-row flex-wrap justify-center">
           {allCategories.length ? (
-            allCategories.map((category) => (
-              <CategoryCard
-                key={`${category.id}-${category.name}`}
-                categoryName={category.name}
-                categoryIcon={category.icon}
-              />
-            ))
+            allCategories
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((category) => (
+                <CategoryCard
+                  key={`${category.id}-${category.name}`}
+                  categoryName={category.name}
+                  categoryIcon={category.icon}
+                />
+              ))
           ) : (
             <View className="flex flex-1 flex-col items-center justify-center">
               <Text className="text-xl font-poppinsSemibold text-marketBlackText">
