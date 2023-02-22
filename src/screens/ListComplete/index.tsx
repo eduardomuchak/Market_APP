@@ -62,14 +62,11 @@ export function ListComplete() {
   return (
     <View className="flex flex-1 flex-col items-center">
       <Header title="Completa" backArrow />
-      <ScrollView
-        className="flex flex-col bg-white rounded-xl px-6 py-8 flex-1 mb-4 w-full"
-        showsVerticalScrollIndicator={false}
-      >
+      <View className="flex flex-col bg-white rounded-xl px-6 py-8 flex-1 mb-4 w-full">
         <Text className="text-sm font-bold text-labelText leading-4">
           ITENS
         </Text>
-        <View className="mt-3">
+        <ScrollView className="mt-3" showsVerticalScrollIndicator={false}>
           {allProducts
             .sort((a, b) => a.name.localeCompare(b.name))
             .map((item, index) => (
@@ -80,8 +77,8 @@ export function ListComplete() {
                 onPress={() => handleToggleProduct(item.id)}
               />
             ))}
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </View>
       <BottomBar />
     </View>
   );

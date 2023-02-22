@@ -107,22 +107,24 @@ export function RegisterProduct() {
             SELECIONE AS CATEGORIAS:
           </Text>
           <ScrollView showsVerticalScrollIndicator={false}>
-            {allCategories.map((category) => {
-              return (
-                <Checkbox
-                  key={`${category.id}-${category.name}`}
-                  title={category.name}
-                  checked={
-                    checkedCategories.find(
-                      (checkedCategory) => checkedCategory.id === category.id,
-                    )
-                      ? true
-                      : false
-                  }
-                  onPress={() => handleCheckCategory(category)}
-                />
-              );
-            })}
+            {allCategories
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((category) => {
+                return (
+                  <Checkbox
+                    key={`${category.id}-${category.name}`}
+                    title={category.name}
+                    checked={
+                      checkedCategories.find(
+                        (checkedCategory) => checkedCategory.id === category.id,
+                      )
+                        ? true
+                        : false
+                    }
+                    onPress={() => handleCheckCategory(category)}
+                  />
+                );
+              })}
           </ScrollView>
         </View>
 

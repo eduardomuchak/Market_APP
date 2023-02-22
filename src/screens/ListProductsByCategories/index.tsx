@@ -27,17 +27,19 @@ export function ListProductsByCategories() {
 
   useEffect(() => {
     if (products && categories) {
-      const productsByCategories = categories.categories.map((category) => {
-        return {
-          categoryId: category.id,
-          categoryName: category.name,
-          products: products.products.filter((product) => {
-            return product.categoriesIds.some((categoryId) => {
-              return categoryId === category.id;
-            });
-          }),
-        };
-      });
+      const productsByCategories = categories.categories
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((category) => {
+          return {
+            categoryId: category.id,
+            categoryName: category.name,
+            products: products.products.filter((product) => {
+              return product.categoriesIds.some((categoryId) => {
+                return categoryId === category.id;
+              });
+            }),
+          };
+        });
       setProductsByCategories(productsByCategories);
     }
   }, [products, categories]);

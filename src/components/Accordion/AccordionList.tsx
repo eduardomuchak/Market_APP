@@ -13,6 +13,7 @@ interface Props {
 export function AccordionList({ productsByCategories }: Props) {
   return (
     <FlatList
+      showsVerticalScrollIndicator={false}
       className="px-2"
       data={productsByCategories}
       keyExtractor={(item) => String(item.categoryId)}
