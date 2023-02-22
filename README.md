@@ -32,6 +32,8 @@ O aplicativo tem uma ideia simples e o intuito de resolver esse pequeno problema
 
 - [x] Cadastro de usuário com validação de email
 - [ ] Cadastro de usuário com conta Google
+- [x] Login de usuário via email
+- [ ] Login de usuário via conta Google
 - [x] Listar categorias
 - [x] Listar produtos em diferentes visualizações (lista completa, lista por categorias e lista de apenas itens faltantes)
 - [x] Cadastro de Categoria
