@@ -34,11 +34,12 @@ O aplicativo tem uma ideia simples e o intuito de resolver esse pequeno problema
 - [ ] Cadastro de usuário com conta Google
 - [x] Login de usuário via email
 - [ ] Login de usuário via conta Google
+- [ ] Sistema de recuperação de senha
+- [ ] Editar dados da pessoa usuária
 - [x] Listar categorias
 - [x] Listar produtos em diferentes visualizações (lista completa, lista por categorias e lista de apenas itens faltantes)
 - [x] Cadastro de Categoria
 - [x] Cadastro de Produto
-- [ ] Editar dados da pessoa usuária
 - [ ] Editar categoria já cadastrada
 - [ ] Editar produto já cadastrado
 - [ ] Deletar categoria já cadastrado
