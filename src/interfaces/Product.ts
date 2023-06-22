@@ -11,7 +11,7 @@ export interface Product {
 
 export interface FetchProduct extends Product {
   id: string;
-  checked: boolean;
+  checked: boolean | number;
   createdAt: string;
   updatedAt: string;
   deletedAt: string;
