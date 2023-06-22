@@ -40,8 +40,8 @@ export const init = () => {
           updatedAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
           deletedAt TEXT,
           isDeleted BOOLEAN NOT NULL DEFAULT 0,
-          categoryId TEXT NOT NULL,
-          FOREIGN KEY (categoryId) REFERENCES categories (id)        
+          categoriesIds TEXT NOT NULL,
+          FOREIGN KEY (categoriesIds) REFERENCES categories (id)        
         )`,
         [],
         () => console.log('Products table created successfully'),
@@ -156,7 +156,7 @@ export const insertProduct = (product: Product) => {
     database.transaction((transaction: SQLite.SQLTransaction) => {
       transaction.executeSql(
         `
-          INSERT INTO products (name, categoryId)
+          INSERT INTO products (name, categoriesIds)
           VALUES (?, ?)
         `,
         [product.name, JSON.stringify(product.categoriesIds)],
@@ -221,6 +221,30 @@ export const updateToggleProductCheck = (productId: number) => {
         },
         (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
           console.log('Error toggling product check', error);
+          reject(error);
+          return false;
+        },
+      );
+    });
+  });
+
+  return promise;
+};
+
+export const dropTable = (tableName: string) => {
+  const promise = new Promise<void>((resolve, reject) => {
+    database.transaction((transaction: SQLite.SQLTransaction) => {
+      transaction.executeSql(
+        `
+          DROP TABLE ${tableName}
+        `,
+        [],
+        () => {
+          console.log('Table dropped successfully');
+          resolve();
+        },
+        (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
+          console.log('Error dropping table', error);
           reject(error);
           return false;
         },

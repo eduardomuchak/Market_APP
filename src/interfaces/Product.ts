@@ -6,7 +6,7 @@ interface Category {
 
 export interface Product {
   name: string;
-  categoriesIds: string[];
+  categoriesIds: any;
 }
 
 export interface FetchProduct extends Product {

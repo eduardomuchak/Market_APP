@@ -1,12 +1,16 @@
 import { FlatList } from 'react-native';
 import { AccordionItem } from './AccordionItem';
-import { Product } from '../../services/Products/interfaces';
 
 interface Props {
   productsByCategories: {
     categoryId: string;
     categoryName: string;
-    products: Product[];
+    products: {
+      id: string;
+      name: string;
+      checked: boolean;
+      categoriesIds: string[];
+    }[];
   }[];
 }
 

@@ -1,28 +1,34 @@
 import { CaretDown } from 'phosphor-react-native';
 import { useRef, useState } from 'react';
 import {
+  Animated,
+  LayoutAnimation,
   Text,
   TouchableOpacity,
   View,
-  Animated,
-  LayoutAnimation,
-  Alert,
 } from 'react-native';
 import { toggleAnimations } from '../../animations/ToggleAnimations';
+import {
+  fetchProducts,
+  updateToggleProductCheck,
+} from '../../database/database';
 import { Checkbox } from '../Checkbox';
-import { Product } from '../../services/Products/interfaces';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateToggleCheckedProduct } from '../../services/Products';
+
+interface ContentProps {
+  id: string;
+  name: string;
+  checked: boolean | number;
+  categoriesIds: string[];
+}
 
 export function AccordionItem({
   title,
-  content,
+  content: contentProps,
 }: {
   title: string;
-  content: Product[];
+  content: ContentProps[];
 }) {
-  const queryClient = useQueryClient();
-
+  const [content, setContent] = useState(contentProps);
   const [showContent, setShowContent] = useState(false);
   const animationController = useRef(new Animated.Value(0)).current;
 
@@ -42,21 +48,33 @@ export function AccordionItem({
     outputRange: ['0deg', '180deg'],
   });
 
-  const toggleCheckedProduct = useMutation({
-    mutationFn: updateToggleCheckedProduct,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
-    },
-  });
+  const handleToggleProduct = async (id: string) => {
+    console.log('content', content);
+    // Content:
+    // [{"categoriesIds": "[1]", "checked": false, "id": 1, "name": "Cerveja"}]
+    await updateToggleProductCheck(Number(id));
+    const result = await fetchProducts();
+    // Result:
+    // [{"categoriesIds": "[1]", "checked": 0, "createdAt": "2023-06-22 17:17:30", "deletedAt": null, "id": 1, "isDeleted": 0, "name": "Cerveja", "updatedAt": "2023-06-22 17:17:30"}]
+    console.log('result', result);
 
-  const handleToggleProduct = (id: string) => {
-    toggleCheckedProduct.mutate(id);
-    content.map((item) => {
-      if (item.id === id) {
-        item.checked = !item.checked;
+    const newContent = result.map((item) => {
+      if (Number(item.id) === Number(id)) {
+        return {
+          categoriesIds: item.categoriesIds,
+          checked: item.checked === 0 ? false : true,
+          id: item.id,
+          name: item.name,
+        };
       }
+      return item;
     });
+    console.log('newContent', newContent);
+
+    setContent(newContent);
   };
+
+  console.log('content', content);
 
   return (
     <TouchableOpacity
