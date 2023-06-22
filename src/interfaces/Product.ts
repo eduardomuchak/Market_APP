@@ -4,17 +4,14 @@ interface Category {
   icon: string;
 }
 
-interface CheckedCategory extends Category {
-  checked?: boolean;
-}
-
 export interface Product {
   name: string;
   categoriesIds: string[];
 }
 
 export interface FetchProduct extends Product {
-  id: number;
+  id: string;
+  checked: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt: string;

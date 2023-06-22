@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import { Category, FetchCategory } from '../interfaces/Category';
-import { Product } from '../interfaces/Product';
+import { FetchProduct, Product } from '../interfaces/Product';
 
 const database = SQLite.openDatabase('db.db');
 
@@ -166,6 +166,61 @@ export const insertProduct = (product: Product) => {
         },
         (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
           console.log('Error inserting product', error);
+          reject(error);
+          return false;
+        },
+      );
+    });
+  });
+
+  return promise;
+};
+
+export const fetchProducts = () => {
+  const promise = new Promise<FetchProduct[]>((resolve, reject) => {
+    database.transaction((transaction: SQLite.SQLTransaction) => {
+      transaction.executeSql(
+        `
+          SELECT * FROM products
+        `,
+        [],
+        (_: SQLite.SQLTransaction, result: SQLite.SQLResultSet) => {
+          const products: FetchProduct[] = [];
+
+          for (let i = 0; i < result.rows.length; i++) {
+            products.push(result.rows.item(i));
+          }
+
+          resolve(products);
+        },
+        (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
+          console.log('Error fetching products', error);
+          reject(error);
+          return false;
+        },
+      );
+    });
+  });
+
+  return promise;
+};
+
+export const updateToggleProductCheck = (productId: number) => {
+  const promise = new Promise<void>((resolve, reject) => {
+    database.transaction((transaction: SQLite.SQLTransaction) => {
+      transaction.executeSql(
+        `
+          UPDATE products
+          SET checked = NOT checked
+          WHERE id = ?
+        `,
+        [productId],
+        () => {
+          console.log('Product check toggled successfully');
+          resolve();
+        },
+        (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
+          console.log('Error toggling product check', error);
           reject(error);
           return false;
         },
