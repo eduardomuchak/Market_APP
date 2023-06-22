@@ -1,5 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 import { Category, FetchCategory } from '../interfaces/Category';
+import { Product } from '../interfaces/Product';
 
 const database = SQLite.openDatabase('db.db');
 
@@ -39,7 +40,7 @@ export const init = () => {
           updatedAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
           deletedAt TEXT,
           isDeleted BOOLEAN NOT NULL DEFAULT 0,
-          categoryId TEXT,
+          categoryId TEXT NOT NULL,
           FOREIGN KEY (categoryId) REFERENCES categories (id)        
         )`,
         [],
@@ -140,6 +141,31 @@ export const fetchCategories = () => {
         },
         (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
           console.log('Error fetching categories', error);
+          reject(error);
+          return false;
+        },
+      );
+    });
+  });
+
+  return promise;
+};
+
+export const insertProduct = (product: Product) => {
+  const promise = new Promise<void>((resolve, reject) => {
+    database.transaction((transaction: SQLite.SQLTransaction) => {
+      transaction.executeSql(
+        `
+          INSERT INTO products (name, categoryId)
+          VALUES (?, ?)
+        `,
+        [product.name, JSON.stringify(product.categoriesIds)],
+        () => {
+          console.log('Product inserted successfully');
+          resolve();
+        },
+        (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
+          console.log('Error inserting product', error);
           reject(error);
           return false;
         },
