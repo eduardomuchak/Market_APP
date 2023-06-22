@@ -1,42 +1,33 @@
 import { useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { Header } from '../../components/Header';
-import { Input } from '../../components/ui/Input';
-import { PreviewCard } from '../../components/PreviewCard';
-import { MarketButton } from '../../components/ui/MarketButton';
 import BottomBar from '../../components/BottomBar';
+import { Header } from '../../components/Header';
+import { PreviewCard } from '../../components/PreviewCard';
+import { Input } from '../../components/ui/Input';
+import { MarketButton } from '../../components/ui/MarketButton';
 
-import { createCategory } from '../../services/Category';
 import { useNavigation } from '@react-navigation/native';
 import { Select } from '../../components/ui/Select';
+import { insertCategory } from '../../database/database';
 import { categoriesToSelect } from '../../utils/categoriesToSelect';
 
 export function RegisterCategory() {
-  const queryClient = useQueryClient();
   const { navigate } = useNavigation();
 
   const [name, setName] = useState('');
   const [selectedIcon, setSelectedIcon] = useState('');
 
-  const registerCategory = useMutation({
-    mutationFn: createCategory,
-    onSuccess: () => {
-      console.log('Categoria Cadastrada');
-      queryClient.invalidateQueries({ queryKey: ['categories'] });
-    },
-  });
-
   const handleRegisterCategory = () => {
     const payload = { name, icon: selectedIcon };
     try {
-      registerCategory.mutate(payload);
+      insertCategory(payload);
     } catch (error) {
       Alert.alert('Opa!, algo deu errado', 'Tente novamente');
     } finally {
       Alert.alert('Categoria cadastrada com sucesso!');
       setName('');
+      setSelectedIcon('');
       navigate('register');
     }
   };

@@ -1,37 +1,42 @@
 import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { useQuery } from '@tanstack/react-query';
 
-import { Header } from '../../components/Header';
-import { CategoryCard } from '../../components/CategoryCard';
-import { RegisterCategoryCard } from '../../components/RegisterCategoryCard';
-import { Category } from '../../services/Category/interfaces';
-import { RequestError } from '../../components/RequestError';
 import BottomBar from '../../components/BottomBar';
+import { CategoryCard } from '../../components/CategoryCard';
+import { Header } from '../../components/Header';
 import Loading from '../../components/Loading';
+import { RegisterCategoryCard } from '../../components/RegisterCategoryCard';
+import { RequestError } from '../../components/RequestError';
 
-import { getAllCategories } from '../../services/Category';
+import { fetchCategories } from '../../database/database';
+import { FetchCategory } from '../../interfaces/Category';
 
 export function Categories() {
-  const [allCategories, setAllCategories] = useState<Category[]>([]);
+  const [allCategories, setAllCategories] = useState<FetchCategory[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
-  const {
-    isLoading,
-    error,
-    data: categories,
-  } = useQuery({ queryKey: ['categories'], queryFn: getAllCategories });
+  async function getAllCategoriesFromDB() {
+    try {
+      const result = await fetchCategories();
+      setAllCategories(result);
+    } catch (error) {
+      console.log(error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   useEffect(() => {
-    if (categories) {
-      setAllCategories(categories.categories);
-    }
-  }, [categories]);
+    getAllCategoriesFromDB();
+  }, []);
 
   if (isLoading) {
     return <Loading />;
   }
 
-  if (error) {
+  if (isError) {
     return <RequestError />;
   }
 

@@ -1,10 +1,11 @@
 import * as SQLite from 'expo-sqlite';
+import { Category, FetchCategory } from '../interfaces/Category';
 
 const database = SQLite.openDatabase('db.db');
 
 export const init = () => {
   const promise = new Promise<void>((resolve, reject) => {
-    database.transaction((transaction) => {
+    database.transaction((transaction: SQLite.SQLTransaction) => {
       // User table
       transaction.executeSql(
         `
@@ -85,6 +86,60 @@ export const init = () => {
         () => console.log('CategoryProducts table created successfully'),
         (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
           console.log('Error creating table', error);
+          reject(error);
+          return false;
+        },
+      );
+    });
+  });
+
+  return promise;
+};
+
+export const insertCategory = (category: Category) => {
+  const promise = new Promise<void>((resolve, reject) => {
+    database.transaction((transaction: SQLite.SQLTransaction) => {
+      transaction.executeSql(
+        `
+          INSERT INTO categories (name, icon)
+          VALUES (?, ?)
+        `,
+        [category.name, category.icon],
+        () => {
+          console.log('Category inserted successfully');
+          resolve();
+        },
+        (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
+          console.log('Error inserting category', error);
+          reject(error);
+          return false;
+        },
+      );
+    });
+  });
+
+  return promise;
+};
+
+export const fetchCategories = () => {
+  const promise = new Promise<FetchCategory[]>((resolve, reject) => {
+    database.transaction((transaction: SQLite.SQLTransaction) => {
+      transaction.executeSql(
+        `
+          SELECT * FROM categories
+        `,
+        [],
+        (_: SQLite.SQLTransaction, result: SQLite.SQLResultSet) => {
+          const categories: FetchCategory[] = [];
+
+          for (let i = 0; i < result.rows.length; i++) {
+            categories.push(result.rows.item(i));
+          }
+
+          resolve(categories);
+        },
+        (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
+          console.log('Error fetching categories', error);
           reject(error);
           return false;
         },
