@@ -1,8 +1,6 @@
 import 'react-native-gesture-handler';
 
-import { StatusBar } from 'react-native';
 import {
-  useFonts,
   Poppins_300Light,
   Poppins_400Regular,
   Poppins_500Medium,
@@ -10,15 +8,21 @@ import {
   Poppins_700Bold,
   Poppins_800ExtraBold,
   Poppins_900Black,
+  useFonts,
 } from '@expo-google-fonts/poppins';
 import { NavigationContainer } from '@react-navigation/native';
+import { StatusBar } from 'react-native';
 import { AuthProvider } from './src/contexts/auth';
 
-import Loading from './src/components/Loading';
-import Routes from './src/routes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import Loading from './src/components/Loading';
+import { init } from './src/database/database';
+import Routes from './src/routes';
 
 export default function App() {
+  const [dbInitialized, setDbInitialized] = useState(false);
+
   const [fontsLoaded] = useFonts({
     Poppins_300Light,
     Poppins_400Regular,
@@ -29,11 +33,26 @@ export default function App() {
     Poppins_900Black,
   });
 
-  if (!fontsLoaded) {
-    return <Loading />;
+  const queryClient = new QueryClient();
+
+  async function initializeDatabase() {
+    try {
+      await init();
+    } catch (error) {
+      setDbInitialized(false);
+      console.log(error);
+    } finally {
+      setDbInitialized(true);
+    }
   }
 
-  const queryClient = new QueryClient();
+  useEffect(() => {
+    initializeDatabase();
+  }, []);
+
+  if (!fontsLoaded || !dbInitialized) {
+    return <Loading />;
+  }
 
   return (
     <NavigationContainer>
