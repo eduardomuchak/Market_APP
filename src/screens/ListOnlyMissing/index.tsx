@@ -1,42 +1,31 @@
-import { Alert, ScrollView, Text, View } from 'react-native';
-import { Header } from '../../components/Header';
-import { Checkbox } from '../../components/Checkbox';
-import BottomBar from '../../components/BottomBar';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { Product } from '../../services/Products/interfaces';
-import {
-  getAllProducts,
-  updateToggleCheckedProduct,
-} from '../../services/Products';
+import { ScrollView, Text, View } from 'react-native';
+import BottomBar from '../../components/BottomBar';
+import { Checkbox } from '../../components/Checkbox';
+import { Header } from '../../components/Header';
 import Loading from '../../components/Loading';
 import { RequestError } from '../../components/RequestError';
+import {
+  fetchProducts,
+  updateToggleProductCheck,
+} from '../../database/database';
+import { FetchProduct } from '../../interfaces/Product';
 
 export function ListOnlyMissing() {
-  const queryClient = useQueryClient();
-  const [onlyMissingProducts, setOnlyMissingProducts] = useState<Product[]>([]);
-
-  const {
-    isLoading,
-    error,
-    data: products,
-  } = useQuery({ queryKey: ['products'], queryFn: getAllProducts });
-
-  const toggleCheckedProduct = useMutation({
-    mutationFn: updateToggleCheckedProduct,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
-    },
-  });
+  const [onlyMissingProducts, setOnlyMissingProducts] = useState<
+    FetchProduct[]
+  >([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   const handleToggleProduct = (id: string) => {
-    toggleCheckedProduct.mutate(id);
+    updateToggleProductCheck(Number(id));
     setOnlyMissingProducts((prevState) =>
       prevState.map((item) => {
         if (item.id === id) {
           return {
             ...item,
-            checked: !item.checked,
+            checked: item.checked === 0 ? 1 : 0,
           };
         }
         return item;
@@ -44,20 +33,32 @@ export function ListOnlyMissing() {
     );
   };
 
-  useEffect(() => {
-    if (products) {
-      const onlyMissing = products.products.filter(
-        (product) => product.checked === false,
-      );
+  async function getAllProductsFromDB() {
+    try {
+      const result = await fetchProducts();
+      const onlyMissing = result.filter((product) => product.checked === 0);
       setOnlyMissingProducts(onlyMissing);
+    } catch (error) {
+      console.log(error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
-  }, [products]);
+  }
+
+  useEffect(() => {
+    getAllProductsFromDB();
+  }, []);
+
+  useEffect(() => {
+    getAllProductsFromDB();
+  }, [onlyMissingProducts]);
 
   if (isLoading) {
     return <Loading />;
   }
 
-  if (error) {
+  if (isError) {
     return <RequestError />;
   }
   return (

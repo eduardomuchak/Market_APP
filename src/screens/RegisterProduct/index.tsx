@@ -1,53 +1,39 @@
 import { useEffect, useState } from 'react';
 import { Alert, ScrollView, Text, View } from 'react-native';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
+import BottomBar from '../../components/BottomBar';
+import { Checkbox } from '../../components/Checkbox';
 import { Header } from '../../components/Header';
+import Loading from '../../components/Loading';
+import { RequestError } from '../../components/RequestError';
 import { Input } from '../../components/ui/Input';
 import { MarketButton } from '../../components/ui/MarketButton';
-import { Checkbox } from '../../components/Checkbox';
-import { RequestError } from '../../components/RequestError';
-import BottomBar from '../../components/BottomBar';
-import Loading from '../../components/Loading';
 
-import { getAllCategories } from '../../services/Category';
-import { createProduct } from '../../services/Products';
-import { Category } from '../../services/Category/interfaces';
 import { useNavigation } from '@react-navigation/native';
+import { fetchCategories, insertProduct } from '../../database/database';
+import { FetchCategory } from '../../interfaces/Category';
 
-interface CheckedCategory extends Category {
+interface CheckedCategory extends FetchCategory {
   checked?: boolean;
 }
 
 export function RegisterProduct() {
-  const queryClient = useQueryClient();
   const { navigate } = useNavigation();
 
   const [name, setName] = useState('');
-  const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [checkedCategories, setCheckedCategories] = useState<CheckedCategory[]>(
     [],
   );
 
-  const {
-    isLoading,
-    error,
-    data: categories,
-  } = useQuery({ queryKey: ['categories'], queryFn: getAllCategories });
-
-  const registerProduct = useMutation({
-    mutationFn: createProduct,
-    onSuccess: () => {
-      console.log('Produto Cadastrado');
-      queryClient.invalidateQueries({ queryKey: ['products'] });
-    },
-  });
+  const [allCategories, setAllCategories] = useState<FetchCategory[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   const handleRegisterProduct = () => {
     const categoriesIds = checkedCategories.map((category) => category.id);
     const payload = { name, categoriesIds };
     try {
-      registerProduct.mutate(payload);
+      insertProduct(payload);
     } catch (error) {
       Alert.alert('Opa!, algo deu errado', 'Tente novamente');
     } finally {
@@ -74,17 +60,27 @@ export function RegisterProduct() {
     }
   };
 
-  useEffect(() => {
-    if (categories) {
-      setAllCategories(categories.categories);
+  async function getAllCategoriesFromDB() {
+    try {
+      const result = await fetchCategories();
+      setAllCategories(result);
+    } catch (error) {
+      console.log(error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
-  }, [categories]);
+  }
+
+  useEffect(() => {
+    getAllCategoriesFromDB();
+  }, []);
 
   if (isLoading) {
     return <Loading />;
   }
 
-  if (error) {
+  if (isError) {
     return <RequestError />;
   }
 
@@ -116,7 +112,8 @@ export function RegisterProduct() {
                     title={category.name}
                     checked={
                       checkedCategories.find(
-                        (checkedCategory) => checkedCategory.id === category.id,
+                        (checkedCategory) =>
+                          String(checkedCategory.id) === String(category.id),
                       )
                         ? true
                         : false
@@ -131,7 +128,7 @@ export function RegisterProduct() {
         <MarketButton
           title="Cadastrar"
           variant="primary"
-          onPress={() => handleRegisterProduct()}
+          onPress={handleRegisterProduct}
         />
       </View>
       <BottomBar />

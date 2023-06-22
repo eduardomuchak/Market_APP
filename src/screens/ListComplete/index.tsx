@@ -1,34 +1,21 @@
 import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { Header } from '../../components/Header';
 import { Checkbox } from '../../components/Checkbox';
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import {
-  getAllProducts,
-  updateToggleCheckedProduct,
-} from '../../services/Products';
+import { Header } from '../../components/Header';
 
 import BottomBar from '../../components/BottomBar';
 import Loading from '../../components/Loading';
-import { Product } from '../../services/Products/interfaces';
 import { RequestError } from '../../components/RequestError';
+import {
+  fetchProducts,
+  updateToggleProductCheck,
+} from '../../database/database';
+import { FetchProduct } from '../../interfaces/Product';
 
 export function ListComplete() {
-  const queryClient = useQueryClient();
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
-
-  const {
-    isLoading,
-    error,
-    data: products,
-  } = useQuery({ queryKey: ['products'], queryFn: getAllProducts });
-
-  const toggleCheckedProduct = useMutation({
-    mutationFn: updateToggleCheckedProduct,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['products'] });
-    },
-  });
+  const [allProducts, setAllProducts] = useState<FetchProduct[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
 
   const handleToggleProduct = (id: string) => {
     setAllProducts((prevState) =>
@@ -42,20 +29,30 @@ export function ListComplete() {
         return item;
       }),
     );
-    toggleCheckedProduct.mutate(id);
+    updateToggleProductCheck(Number(id));
   };
 
-  useEffect(() => {
-    if (products) {
-      setAllProducts(products.products);
+  async function getAllProductsFromDB() {
+    try {
+      const result = await fetchProducts();
+      setAllProducts(result);
+    } catch (error) {
+      console.log(error);
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
     }
-  }, [products]);
+  }
+
+  useEffect(() => {
+    getAllProductsFromDB();
+  }, []);
 
   if (isLoading) {
     return <Loading />;
   }
 
-  if (error) {
+  if (isError) {
     return <RequestError />;
   }
 

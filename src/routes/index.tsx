@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
 import { useAuth } from '../contexts/auth';
 
-import { AuthRoutes } from '../routes/auth.routes';
 import { AppRoutes } from '../routes/app.routes';
 
 const Routes: React.FC = () => {
@@ -17,7 +16,8 @@ const Routes: React.FC = () => {
     );
   }
 
-  return signed ? <AppRoutes /> : <AuthRoutes />;
+  // return signed ? <AppRoutes /> : <AuthRoutes />;
+  return <AppRoutes />;
 };
 
 export default Routes;

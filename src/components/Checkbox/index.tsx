@@ -1,16 +1,16 @@
+import { Feather } from '@expo/vector-icons';
+import clsx from 'clsx';
 import {
   Text,
   TouchableOpacity,
   TouchableOpacityProps,
   View,
 } from 'react-native';
-import { Feather } from '@expo/vector-icons';
-import colors from 'tailwindcss/colors';
 import Animated, { ZoomIn, ZoomOut } from 'react-native-reanimated';
-import clsx from 'clsx';
+import colors from 'tailwindcss/colors';
 
 interface Props extends TouchableOpacityProps {
-  checked?: boolean;
+  checked?: boolean | number;
   title: string;
 }
 
