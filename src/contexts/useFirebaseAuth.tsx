@@ -1,6 +1,6 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import 'react-native-url-polyfill/auto';
-
-import React, { createContext, useContext, useState } from 'react';
 
 import {
   User,
@@ -8,6 +8,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
+import { Alert } from 'react-native';
 import { FIREBASE_AUTH } from '../lib/firebase/config';
 
 interface AuthContextData {
@@ -29,6 +30,7 @@ interface AuthContextData {
     email: string;
     password: string;
   }): Promise<void>;
+  checkUserSession(): Promise<void>;
 }
 
 const FirebaseAuthContext = createContext<AuthContextData>(
@@ -53,10 +55,12 @@ const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
+      await saveUser(response.user);
       setUser(response.user);
       setSession(response);
     } catch (error) {
       console.log(error);
+      Alert.alert('Erro!', 'Não foi possível fazer login.');
     } finally {
       setIsLoading(false);
     }
@@ -68,8 +72,10 @@ const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }) => {
       await auth.signOut();
       setUser(null);
       setSession(null);
+      await AsyncStorage.removeItem('user');
     } catch (error) {
       console.log(error);
+      Alert.alert('Erro!', 'Não foi possível fazer logout.');
     } finally {
       setIsLoading(false);
     }
@@ -84,18 +90,53 @@ const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }) => {
   }) {
     setIsLoading(true);
     try {
-      const response = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password,
-      );
-      console.log(response);
+      await createUserWithEmailAndPassword(auth, email, password);
+      Alert.alert('Sucesso!', 'Usuário criado com sucesso!');
     } catch (error) {
       console.log(error);
+      Alert.alert('Erro!', 'Não foi possível criar o usuário.');
     } finally {
       setIsLoading(false);
     }
   }
+
+  async function saveUser(user: User) {
+    try {
+      const jsonUser = JSON.stringify(user);
+      await AsyncStorage.setItem('user', jsonUser);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function loadUser() {
+    try {
+      const jsonUser = await AsyncStorage.getItem('user');
+      if (jsonUser) {
+        const user = JSON.parse(jsonUser);
+        setUser(user);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function checkUserSession() {
+    try {
+      const userJson = await AsyncStorage.getItem('user');
+      const user = userJson ? JSON.parse(userJson) : null;
+
+      if (user && session && user.refreshToken !== session.user.refreshToken) {
+        await AsyncStorage.removeItem('user');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    loadUser();
+  }, []);
 
   return (
     <FirebaseAuthContext.Provider
@@ -106,6 +147,7 @@ const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }) => {
         signIn,
         signOut,
         signUpWithEmail,
+        checkUserSession,
       }}
     >
       {children}
