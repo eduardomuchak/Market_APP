@@ -19,7 +19,7 @@ export const init = () => {
         )`,
         [],
         () => {
-          console.log('Users table created successfully');
+          // console.log('Users table created successfully');
           resolve();
         },
         (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
@@ -44,7 +44,9 @@ export const init = () => {
           FOREIGN KEY (categoriesIds) REFERENCES categories (id)        
         )`,
         [],
-        () => console.log('Products table created successfully'),
+        () => {
+          // console.log('Products table created successfully')
+        },
         (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
           console.log('Error creating table', error);
           reject(error);
@@ -65,7 +67,9 @@ export const init = () => {
           isDeleted BOOLEAN NOT NULL DEFAULT 0
         )`,
         [],
-        () => console.log('Categories table created successfully'),
+        () => {
+          // console.log('Categories table created successfully')
+        },
         (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
           console.log('Error creating table', error);
           reject(error);
@@ -84,7 +88,9 @@ export const init = () => {
           FOREIGN KEY (productId) REFERENCES products (id)
         )`,
         [],
-        () => console.log('CategoryProducts table created successfully'),
+        () => {
+          // console.log('CategoryProducts table created successfully')
+        },
         (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
           console.log('Error creating table', error);
           reject(error);
@@ -107,7 +113,7 @@ export const insertCategory = (category: Category) => {
         `,
         [category.name, category.icon],
         () => {
-          console.log('Category inserted successfully');
+          // console.log('Category inserted successfully');
           resolve();
         },
         (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
@@ -161,7 +167,7 @@ export const insertProduct = (product: Product) => {
         `,
         [product.name, JSON.stringify(product.categoriesIds)],
         () => {
-          console.log('Product inserted successfully');
+          // console.log('Product inserted successfully');
           resolve();
         },
         (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
@@ -216,7 +222,7 @@ export const updateToggleProductCheck = (productId: number) => {
         `,
         [productId],
         () => {
-          console.log('Product check toggled successfully');
+          // console.log('Product check toggled successfully');
           resolve();
         },
         (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {
@@ -240,7 +246,7 @@ export const dropTable = (tableName: string) => {
         `,
         [],
         () => {
-          console.log('Table dropped successfully');
+          // console.log('Table dropped successfully');
           resolve();
         },
         (_: SQLite.SQLTransaction, error: SQLite.SQLError) => {

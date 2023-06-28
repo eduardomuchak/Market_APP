@@ -12,11 +12,11 @@ import {
 } from '@expo-google-fonts/poppins';
 import { NavigationContainer } from '@react-navigation/native';
 import { StatusBar } from 'react-native';
-import { AuthProvider } from './src/contexts/auth';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import Loading from './src/components/Loading';
+import { FirebaseAuthProvider } from './src/contexts/useFirebaseAuth';
 import { init } from './src/database/database';
 import Routes from './src/routes';
 
@@ -62,9 +62,9 @@ export default function App() {
           backgroundColor={'transparent'}
           translucent={true}
         />
-        <AuthProvider>
+        <FirebaseAuthProvider>
           <Routes />
-        </AuthProvider>
+        </FirebaseAuthProvider>
       </QueryClientProvider>
     </NavigationContainer>
   );
