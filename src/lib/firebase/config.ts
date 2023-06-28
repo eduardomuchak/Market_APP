@@ -1,15 +1,24 @@
+import {
+  FIREBASE_API_KEY,
+  FIREBASE_APP_ID,
+  FIREBASE_AUTH_DOMAIN,
+  FIREBASE_MEASUREMENT_ID,
+  FIREBASE_MESSAGING_SENDER_ID,
+  FIREBASE_PROJECT_ID,
+  FIREBASE_STORAGE_BUCKET,
+} from '@env';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBus-P9qnP4tQdX3fao2_hlIF3ReZEtuU0',
-  authDomain: 'market-shopping-app.firebaseapp.com',
-  projectId: 'market-shopping-app',
-  storageBucket: 'market-shopping-app.appspot.com',
-  messagingSenderId: '116992852883',
-  appId: '1:116992852883:web:952d7a3121bd1c271e5e66',
-  measurementId: 'G-SDKB57GDC7',
+  apiKey: FIREBASE_API_KEY,
+  authDomain: FIREBASE_AUTH_DOMAIN,
+  projectId: FIREBASE_PROJECT_ID,
+  storageBucket: FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: FIREBASE_MESSAGING_SENDER_ID,
+  appId: FIREBASE_APP_ID,
+  measurementId: FIREBASE_MEASUREMENT_ID,
 };
 
 export const FIREBASE_APP = initializeApp(firebaseConfig);
