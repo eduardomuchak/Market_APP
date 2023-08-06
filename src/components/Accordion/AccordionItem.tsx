@@ -49,14 +49,8 @@ export function AccordionItem({
   });
 
   const handleToggleProduct = async (id: string) => {
-    console.log('content', content);
-    // Content:
-    // [{"categoriesIds": "[1]", "checked": false, "id": 1, "name": "Cerveja"}]
     await updateToggleProductCheck(Number(id));
     const result = await fetchProducts();
-    // Result:
-    // [{"categoriesIds": "[1]", "checked": 0, "createdAt": "2023-06-22 17:17:30", "deletedAt": null, "id": 1, "isDeleted": 0, "name": "Cerveja", "updatedAt": "2023-06-22 17:17:30"}]
-    console.log('result', result);
 
     const newContent = result.map((item) => {
       if (Number(item.id) === Number(id)) {
@@ -69,12 +63,9 @@ export function AccordionItem({
       }
       return item;
     });
-    console.log('newContent', newContent);
 
     setContent(newContent);
   };
-
-  console.log('content', content);
 
   return (
     <TouchableOpacity

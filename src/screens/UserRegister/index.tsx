@@ -1,38 +1,19 @@
-import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { Alert, Text, View } from 'react-native';
+import { useState } from 'react';
+import { Text, View } from 'react-native';
 import { Input } from '../../components/ui/Input';
 import { MarketButton } from '../../components/ui/MarketButton';
-import { supabase } from '../../lib/supabase';
 
 import Logo from '../../assets/brand/logo.svg';
 import Circles from '../../assets/style/circles.svg';
+import { useFirebaseAuth } from '../../contexts/useFirebaseAuth';
 
 export function UserRegister() {
   const { navigate } = useNavigation();
+  const { signUpWithEmail, isLoading } = useFirebaseAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  async function signUpWithEmail() {
-    setLoading(true);
-    const { error, data } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-    });
-
-    if (data) {
-      Alert.alert(
-        'Sucesso!',
-        'Finalize o cadastro através do link que você receberá no seu email.',
-      );
-      navigate('login');
-    }
-
-    if (error) Alert.alert(error.message);
-    setLoading(false);
-  }
 
   return (
     <View className="flex flex-1 bg-white">
@@ -70,9 +51,8 @@ export function UserRegister() {
           </View>
           <View className="mt-8">
             <MarketButton
-              disabled={loading}
-              onPress={signUpWithEmail}
-              title="Cadastrar"
+              onPress={() => signUpWithEmail({ email, password })}
+              title={isLoading ? 'Carregando...' : 'Cadastrar'}
               variant="primary"
             />
           </View>

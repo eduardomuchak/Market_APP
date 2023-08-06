@@ -1,16 +1,16 @@
-import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../../contexts/auth';
+import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { Input } from '../../components/ui/Input';
 import { MarketButton } from '../../components/ui/MarketButton';
 
 import Logo from '../../assets/brand/logo.svg';
 import Circles from '../../assets/style/circles.svg';
+import { useFirebaseAuth } from '../../contexts/useFirebaseAuth';
 
 export function Login() {
   const { navigate } = useNavigation();
-  const { signIn } = useAuth();
+  const { signIn, isLoading } = useFirebaseAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -52,7 +52,7 @@ export function Login() {
           <View className="mt-8">
             <MarketButton
               onPress={() => signIn({ email, password })}
-              title="Entrar"
+              title={isLoading ? 'Carregando...' : 'Entrar'}
               variant="primary"
             />
           </View>

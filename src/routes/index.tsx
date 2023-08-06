@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
-import { useAuth } from '../contexts/auth';
-
-import { AppRoutes } from '../routes/app.routes';
+import { useFirebaseAuth } from '../contexts/useFirebaseAuth';
+import { AppRoutes } from './app.routes';
+import { AuthRoutes } from './auth.routes';
 
 const Routes: React.FC = () => {
-  const { signed, isLoading } = useAuth();
+  const { session, isLoading, checkUserSession } = useFirebaseAuth();
+
+  useEffect(() => {
+    checkUserSession();
+  }, []);
 
   if (isLoading) {
     return (
@@ -16,8 +20,7 @@ const Routes: React.FC = () => {
     );
   }
 
-  // return signed ? <AppRoutes /> : <AuthRoutes />;
-  return <AppRoutes />;
+  return session ? <AppRoutes /> : <AuthRoutes />;
 };
 
 export default Routes;
