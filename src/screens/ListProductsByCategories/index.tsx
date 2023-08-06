@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { AccordionList } from '../../components/Accordion/AccordionList';
-import BottomBar from '../../components/BottomBar';
 import { Header } from '../../components/Header';
 import Loading from '../../components/Loading';
 import { RequestError } from '../../components/RequestError';
@@ -94,7 +93,6 @@ export function ListProductsByCategories() {
     <View className="flex-1">
       <Header title="Por Categoria" backArrow={true} />
       <AccordionList productsByCategories={productsByCategories} />
-      <BottomBar />
     </View>
   );
 }

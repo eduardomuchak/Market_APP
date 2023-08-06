@@ -1,13 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import 'react-native-url-polyfill/auto';
-
 import {
   User,
   UserCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { Alert } from 'react-native';
 import { FIREBASE_AUTH } from '../lib/firebase/config';
 
@@ -37,7 +41,7 @@ const FirebaseAuthContext = createContext<AuthContextData>(
   {} as AuthContextData,
 );
 
-const FirebaseAuthProvider = ({ children }: { children: React.ReactNode }) => {
+const FirebaseAuthProvider = ({ children }: { children: ReactNode }) => {
   const auth = FIREBASE_AUTH;
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);

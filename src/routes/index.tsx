@@ -1,26 +1,16 @@
-import React, { useEffect } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import TabRoutes from './tab.routes';
 
-import { useFirebaseAuth } from '../contexts/useFirebaseAuth';
-import { AppRoutes } from './app.routes';
-import { AuthRoutes } from './auth.routes';
+export default function Routes() {
+  // const { user, isLoading, checkUserSession } = useFirebaseAuth();
 
-const Routes: React.FC = () => {
-  const { session, isLoading, checkUserSession } = useFirebaseAuth();
+  // useEffect(() => {
+  //   checkUserSession();
+  // }, []);
 
-  useEffect(() => {
-    checkUserSession();
-  }, []);
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator color="#F50057" size={80} />
-      </View>
-    );
-  }
-
-  return session ? <AppRoutes /> : <AuthRoutes />;
-};
-
-export default Routes;
+  // return user ? <TabRoutes /> : <AuthRoutes />;
+  return <TabRoutes />;
+}

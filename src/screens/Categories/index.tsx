@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 
-import BottomBar from '../../components/BottomBar';
 import { CategoryCard } from '../../components/CategoryCard';
 import { Header } from '../../components/Header';
 import Loading from '../../components/Loading';
@@ -57,7 +56,7 @@ export function Categories() {
               ))
           ) : (
             <View className="flex flex-1 flex-col items-center justify-center">
-              <Text className="text-xl font-poppinsSemibold text-marketBlackText">
+              <Text className="font-poppinsSemibold text-xl text-marketBlackText">
                 Nenhuma categoria cadastrada
               </Text>
             </View>
@@ -65,7 +64,6 @@ export function Categories() {
           <RegisterCategoryCard />
         </View>
       </ScrollView>
-      <BottomBar />
     </View>
   );
 }

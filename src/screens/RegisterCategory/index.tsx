@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
 
-import BottomBar from '../../components/BottomBar';
 import { Header } from '../../components/Header';
 import { PreviewCard } from '../../components/PreviewCard';
 import { Input } from '../../components/ui/Input';
@@ -36,10 +35,10 @@ export function RegisterCategory() {
     <View className="flex flex-1 flex-col items-center">
       <Header title="Cadastro de Categoria" backArrow />
       <ScrollView
-        className="w-full bg-white rounded-lg p-6 my-2 flex-1"
+        className="my-2 w-full flex-1 rounded-lg bg-white p-6"
         showsVerticalScrollIndicator={false}
       >
-        <View className="flex flex-col pt-4 pb-7">
+        <View className="flex flex-col pb-7 pt-4">
           <View className="mb-3">
             <Input
               placeholder="Digite"
@@ -63,7 +62,6 @@ export function RegisterCategory() {
           onPress={() => handleRegisterCategory()}
         />
       </ScrollView>
-      <BottomBar />
     </View>
   );
 }

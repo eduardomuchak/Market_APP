@@ -2,7 +2,6 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
 import homeImage from '../../assets/illustrations/undraw_fall.png';
-import BottomBar from '../../components/BottomBar';
 import { MarketButton } from '../../components/ui/MarketButton';
 import { useFirebaseAuth } from '../../contexts/useFirebaseAuth';
 
@@ -12,20 +11,20 @@ export function Home() {
   return (
     <View className="flex flex-1">
       <ScrollView
-        className="flex flex-col bg-white rounded-xl pt-8 px-6"
+        className="flex flex-col rounded-xl bg-white px-6 pt-8"
         showsVerticalScrollIndicator={false}
       >
         <View className="flex items-end">
           <MarketButton title="Sair" onPress={signOut} variant="ghost" />
         </View>
 
-        <View className="flex flex-col w-[85%] mx-auto">
+        <View className="mx-auto flex w-[85%] flex-col">
           <View className="flex flex-col items-stretch gap-3">
-            <Text className="text-base font-poppinsMedium text-marketBlackText">
+            <Text className="font-poppinsMedium text-base text-marketBlackText">
               Bem vindo(a) ao
             </Text>
             <View className="flex items-end">
-              <Text className="text-5xl font-poppinsBold text-marketColor">
+              <Text className="font-poppinsBold text-5xl text-marketColor">
                 market
               </Text>
             </View>
@@ -36,11 +35,11 @@ export function Home() {
           <Image source={homeImage} />
         </View>
 
-        <Text className="font-poppinsMedium text-base leading-6 mx-auto mt-10">
+        <Text className="mx-auto mt-10 font-poppinsMedium text-base leading-6">
           O que você deseja fazer?
         </Text>
 
-        <View className="gap-4 mt-6 flex flex-col">
+        <View className="mt-6 flex flex-col gap-4">
           <MarketButton
             title="Cadastrar item ou categoria"
             variant="primary"
@@ -58,7 +57,6 @@ export function Home() {
           />
         </View>
       </ScrollView>
-      <BottomBar />
     </View>
   );
 }

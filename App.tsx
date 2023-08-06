@@ -1,5 +1,7 @@
 import 'expo-dev-client';
+import * as SystemUI from 'expo-system-ui';
 import 'react-native-gesture-handler';
+import 'react-native-url-polyfill/auto';
 
 import {
   Poppins_300Light,
@@ -12,9 +14,9 @@ import {
   useFonts,
 } from '@expo-google-fonts/poppins';
 import { NavigationContainer } from '@react-navigation/native';
-import { StatusBar } from 'react-native';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import Loading from './src/components/Loading';
 import { FirebaseAuthProvider } from './src/contexts/useFirebaseAuth';
@@ -47,8 +49,13 @@ export default function App() {
     }
   }
 
+  async function SetBackgroundColor() {
+    await SystemUI.setBackgroundColorAsync('#F50057');
+  }
+
   useEffect(() => {
     initializeDatabase();
+    SetBackgroundColor();
   }, []);
 
   if (!fontsLoaded || !dbInitialized) {
@@ -56,17 +63,13 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <QueryClientProvider client={queryClient}>
-        <StatusBar
-          barStyle={'dark-content'}
-          backgroundColor={'transparent'}
-          translucent={true}
-        />
+    <QueryClientProvider client={queryClient}>
+      <NavigationContainer>
         <FirebaseAuthProvider>
+          <StatusBar style="dark" />
           <Routes />
         </FirebaseAuthProvider>
-      </QueryClientProvider>
-    </NavigationContainer>
+      </NavigationContainer>
+    </QueryClientProvider>
   );
 }

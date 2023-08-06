@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import BottomBar from '../../components/BottomBar';
 import { Checkbox } from '../../components/Checkbox';
 import { Header } from '../../components/Header';
 import Loading from '../../components/Loading';
@@ -65,10 +64,10 @@ export function ListOnlyMissing() {
     <View className="flex flex-1 flex-col items-center">
       <Header title="Apenas itens faltantes" backArrow />
       <ScrollView
-        className="flex flex-col bg-white rounded-xl px-6 py-8 flex-1 mb-4 w-full"
+        className="mb-4 flex w-full flex-1 flex-col rounded-xl bg-white px-6 py-8"
         showsVerticalScrollIndicator={false}
       >
-        <Text className="text-sm font-bold text-labelText leading-4">
+        <Text className="text-sm font-bold leading-4 text-labelText">
           ITENS
         </Text>
         <View className="mt-3">
@@ -84,15 +83,14 @@ export function ListOnlyMissing() {
                 />
               ))
           ) : (
-            <View className="h-40 flex items-center justify-center">
-              <Text className="text-xl font-poppinsBold text-marketBlackText">
+            <View className="flex h-40 items-center justify-center">
+              <Text className="font-poppinsBold text-xl text-marketBlackText">
                 Nenhum item faltante
               </Text>
             </View>
           )}
         </View>
       </ScrollView>
-      <BottomBar />
     </View>
   );
 }

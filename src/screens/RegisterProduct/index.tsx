@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Alert, ScrollView, Text, View } from 'react-native';
 
-import BottomBar from '../../components/BottomBar';
 import { Checkbox } from '../../components/Checkbox';
 import { Header } from '../../components/Header';
 import Loading from '../../components/Loading';
@@ -87,7 +86,7 @@ export function RegisterProduct() {
   return (
     <View className="flex flex-1 flex-col items-center">
       <Header title="Cadastro de Produto" backArrow />
-      <View className="w-full bg-white rounded-lg p-6 my-2 flex-1">
+      <View className="my-2 w-full flex-1 rounded-lg bg-white p-6">
         <View className="flex flex-col pt-4">
           <View className="mb-3">
             <Input
@@ -99,7 +98,7 @@ export function RegisterProduct() {
           </View>
         </View>
         <View className="mb-5 mt-3 flex flex-1">
-          <Text className="text-labelText font-poppinsBold mb-4">
+          <Text className="mb-4 font-poppinsBold text-labelText">
             SELECIONE AS CATEGORIAS:
           </Text>
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -131,7 +130,6 @@ export function RegisterProduct() {
           onPress={handleRegisterProduct}
         />
       </View>
-      <BottomBar />
     </View>
   );
 }
